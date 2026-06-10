@@ -7,6 +7,7 @@ function App() {
       <header className="App-header">
         <h1>Welcome to Solutions Adda </h1>
  <h2>Dishant boss</h2>
+ <h3>Prafful sir</h3>
       </header>
     </div>
   );
