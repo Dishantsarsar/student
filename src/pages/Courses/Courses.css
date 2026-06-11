@@ -52,6 +52,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  flex: 1;
 }
 
 .search-input {
@@ -486,6 +487,284 @@
   color: #b0aec6;
 }
 
+/* Search & Sort layout */
+.search-sort-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.sort-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-label {
+  font-size: 0.9rem;
+  color: #b0aec6;
+  white-space: nowrap;
+}
+
+.sort-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 15px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sort-select:focus {
+  border-color: #00f2fe;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+}
+
+.sort-select option {
+  background: #120e2e;
+  color: #fff;
+}
+
+.toggles-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Enrolled State on Card */
+.course-card.enrolled {
+  border-color: rgba(0, 242, 254, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 242, 254, 0.05);
+}
+
+.course-icon-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.enrolled-badge {
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 10px rgba(0, 242, 254, 0.3);
+}
+
+/* Card Progress Tracker */
+.card-progress-container {
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progress-text-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #b0aec6;
+}
+
+.card-progress-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f2fe, #fc00ff);
+  border-radius: 10px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modal Progress Tracker */
+.modal-progress-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 15px;
+  margin-bottom: 25px;
+}
+
+.modal-progress-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.modal-progress-text span {
+  color: #b0aec6;
+}
+
+.modal-progress-text strong {
+  color: #00f2fe;
+}
+
+.modal-progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.modal-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f2fe, #fc00ff);
+  border-radius: 10px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.syllabus-instruction {
+  font-size: 0.85rem;
+  color: #b0aec6;
+  margin-bottom: 12px;
+}
+
+.syllabus-instruction.disabled {
+  color: rgba(255, 255, 255, 0.3);
+  font-style: italic;
+}
+
+/* Interactive Syllabus List */
+.syllabus-list.interactive {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.syllabus-item-interactive {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 12px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.syllabus-item-interactive:not(.disabled) {
+  cursor: pointer;
+}
+
+.syllabus-item-interactive:not(.disabled):hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 242, 254, 0.2);
+}
+
+.syllabus-item-interactive.completed {
+  background: rgba(0, 242, 254, 0.04);
+  border-color: rgba(0, 242, 254, 0.15);
+}
+
+.syllabus-item-interactive.completed .syllabus-item-text {
+  color: #8c8aa7;
+  text-decoration: line-through;
+}
+
+.syllabus-item-interactive.disabled {
+  opacity: 0.7;
+}
+
+/* Custom Checkbox styles */
+.custom-checkbox-wrapper {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.syllabus-checkbox-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkbox-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.syllabus-item-interactive:not(.disabled):hover .custom-checkbox-box {
+  border-color: #00f2fe;
+}
+
+.syllabus-item-interactive.completed .custom-checkbox-box {
+  background-color: #00f2fe;
+  border-color: #00f2fe;
+}
+
+.custom-checkbox-box:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.syllabus-item-interactive.completed .custom-checkbox-box:after {
+  display: block;
+}
+
+.custom-checkbox-box:after {
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid #000;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.syllabus-bullet-emoji {
+  font-size: 0.95rem;
+}
+
+.syllabus-item-text {
+  font-size: 0.9rem;
+  color: #d1cfe2;
+  transition: color 0.2s ease;
+}
+
+/* Actions styling */
+.leave-btn {
+  background: rgba(255, 51, 102, 0.1) !important;
+  border: 1px solid rgba(255, 51, 102, 0.3) !important;
+  color: #ff3366 !important;
+  box-shadow: none !important;
+}
+
+.leave-btn:hover {
+  background: #ff3366 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 20px rgba(255, 51, 102, 0.4) !important;
+}
+
 /* Responsiveness */
 @media (max-width: 768px) {
   .courses-header h1 {
@@ -493,6 +772,13 @@
   }
   .search-filter-container {
     padding: 15px;
+  }
+  .search-sort-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .sort-select {
+    width: 100%;
   }
   .filter-row {
     flex-direction: column;
