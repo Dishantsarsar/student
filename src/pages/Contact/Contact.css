@@ -1,0 +1,136 @@
+.contact-page {
+  padding: 60px 5%;
+  min-height: calc(100vh - 200px);
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.contact-header h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-header p {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-container {
+  display: flex;
+  gap: 50px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-info h3 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.info-item .icon {
+  font-size: 1.5rem;
+  background: var(--glass-bg);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+}
+
+.info-item p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.contact-social {
+  margin-top: 40px;
+}
+
+.contact-social h4 {
+  margin-bottom: 15px;
+  color: var(--text-muted);
+}
+
+.contact-form-container {
+  flex: 1.5;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.form-group input,
+.form-group textarea {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 12px 15px;
+  color: var(--text-main);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-submit {
+  margin-top: 10px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    padding: 30px 20px;
+  }
+  
+  .contact-info {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+}
