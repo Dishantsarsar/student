@@ -1,0 +1,20 @@
+[33m9ff6ed1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/Dishantsarsar/student
+[33m00798b9[m Merge branch 'main' of https://github.com/Dishantsarsar/student
+[33ma90b6f3[m sidhart changes
+[33me146e36[m Merge pull request #3 from Dishantsarsar/frontend
+[33m97372a4[m[33m ([m[1;31morigin/frontend[m[33m)[m Resolved merge conflicts
+[33m56362a7[m Updated homepage and project structure
+[33m954d148[m fix: resolve CSS duplicate, add coursesData to tracking, improve course page
+[33md4c7d09[m feat: add interactive search, filters, persistent favorites, and dynamic syllabus details modal to Courses component
+[33m2df5acd[m Merge branch 'main' into frontend
+[33mcd08468[m feat: implement initial project structure with routing, Navbar, and Home landing page components
+[33m80ae7e4[m Updated App.js
+[33m1621aa8[m Merge branch 'main' of https://github.com/Dishantsarsar/student
+[33m275cc74[m Prafful Today Work
+[33mf7feef1[m Merge pull request #2 from Dishantsarsar/prafful
+[33ma046dec[m[33m ([m[1;31morigin/prafful[m[33m)[m h2 tag
+[33me3052ca[m Merge pull request #1 from Dishantsarsar/prafful
+[33md0eda31[m h3 change
+[33m9142594[m h2 tag
+[33m2605125[m course.js
+[33m46e0fb3[m[33m ([m[1;31morigin/backend[m[33m)[m Initial commit
