@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Auth.css';
 
 const UserIcon = () => (
@@ -34,11 +34,19 @@ const initialSignup = { name: '', email: '', password: '' };
 const initialLogin = { email: '', password: '' };
 
 function Auth() {
-  const [isLogin, setIsLogin] = useState(false);
-  const [form, setForm] = useState(initialSignup);
+  const location = useLocation();
+  const [isLogin, setIsLogin] = useState(location.state?.isLogin ?? false);
+  const [form, setForm] = useState(location.state?.isLogin ? initialLogin : initialSignup);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const target = location.state?.isLogin ?? false;
+    setIsLogin(target);
+    setForm(target ? initialLogin : initialSignup);
+    setErrors({});
+  }, [location.state?.isLogin]);
 
   const toggleMode = () => {
     setIsLogin((prev) => !prev);

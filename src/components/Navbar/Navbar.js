@@ -22,8 +22,8 @@ function Navbar() {
       </ul>
 
       <div className="navbar-actions">
-        <button className="btn-login" onClick={() => navigate('/auth')}>Log In</button>
-        <button className="btn-signup" onClick={() => navigate('/auth')}>Sign Up</button>
+        <button className="btn-login" onClick={() => navigate('/auth', { state: { isLogin: true } })}>Sign In</button>
+        <button className="btn-signup" onClick={() => navigate('/auth', { state: { isLogin: false } })}>Sign Up</button>
       </div>
 
       <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
