@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Courses.css";
-import { coursesData } from "./coursesData";
+import { coursesData } from "../../coursesData";
 
 function Courses() {
   const [searchTerm, setSearchTerm] = useState("");
