@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Chatbot from '../../components/Chatbot/Chatbot';
 import './Home.css';
 
 function Home() {
-  // State to hold feature data. This structure makes it easy for an Admin to update this later via API.
-  const [featuresData, setFeaturesData] = useState([
+  // Feature data used in the home page. This structure makes it easy for an Admin to update later via API.
+  const featuresData = [
     {
       id: "instructors",
       icon: "👨‍🏫",
@@ -50,7 +51,7 @@ function Home() {
       contentType: "text",
       contentList: []
     }
-  ]);
+  ];
 
   const [selectedFeature, setSelectedFeature] = useState(null);
 
@@ -166,6 +167,8 @@ function Home() {
           </div>
         </div>
       )}
+
+      <Chatbot />
     </div>
   );
 }
