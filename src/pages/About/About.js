@@ -3,75 +3,62 @@ import './About.css';
 
 function About() {
   return (
-    <div className="about-container">
-      {/* Hero Section */}
-      <header className="about-hero">
-        <div className="badge">About Solution Adda</div>
-        <h1 className="about-title">Empowering the <span className="highlight-blue">Next Generation</span> of Innovators</h1>
-        <p className="about-subtitle">
-          We believe that quality education should be accessible, engaging, and designed for the future. Solution Adda is here to bridge the gap between ambition and success.
+    <div className="student-about-dark">
+      {/* Premium Dark Hero Header */}
+      <header className="dark-hero">
+        <span className="project-tag">E-Learning Platform</span>
+        <h1 className="hero-main-title">About <span className="text-gradient">Student Adda</span></h1>
+        <p className="hero-subtitle">
+          A centralized full-stack learning platform designed to streamline student education and course management.
         </p>
       </header>
 
-      {/* Why We Built This */}
-      <section className="about-section">
-        <div className="two-column-layout">
-          <div className="content-side">
-            <h2 className="section-heading">Why Was Solution Adda Created?</h2>
-            <p className="section-text">
-              Traditional learning often struggles to keep up with the fast-paced evolution of technology. We noticed a recurring core challenge: <strong>dispersed learning materials and a lack of structured progress tracking were hindering academic growth.</strong>
-            </p>
-            <p className="section-text">
-              Solution Adda was built to solve this. We wanted to create a centralized, distraction-free digital environment where students could seamlessly discover courses, engage with high-quality video content, and visually track their learning milestones all in one place.
-            </p>
-            <p className="section-text">
-              By bridging the gap between traditional education systems and modern digital accessibility, we provide a structured path for anyone wanting to master in-demand tech skills.
-            </p>
-          </div>
-          <div className="image-side">
-            <div className="abstract-graphic">
-              <div className="circle circle-1"></div>
-              <div className="circle circle-2"></div>
-              <div className="floating-card">
-                <h3>Our Mission</h3>
-                <p>To democratize tech education globally.</p>
-              </div>
-            </div>
-          </div>
+      {/* Core Concept Section */}
+      <section className="dark-content-section">
+        <div className="concept-card">
+          <h2>The Problem We Are Solving</h2>
+          <p>
+            In traditional learning, study materials, video links, and assignments are often scattered across different groups and websites. 
+            <strong> Student Adda</strong> solves this challenge by bringing everything into one unified dashboard. 
+            Students can explore courses, watch video lessons, and monitor their completion metrics seamlessly.
+          </p>
         </div>
       </section>
 
-      {/* General Knowledge & Core Values */}
-      <section className="about-section dark-bg">
-        <h2 className="section-heading center-text">What We Stand For</h2>
-        <div className="values-grid">
-          <div className="value-card">
-            <div className="value-icon">🌍</div>
-            <h3>Digital Accessibility</h3>
-            <p>Education shouldn't have borders. Our platform is designed to be accessible from anywhere, bringing expert knowledge directly to your screen.</p>
+      {/* Clean Feature Blocks (No Complex Grid/Table) */}
+      <section className="dark-content-section">
+        <h2 className="section-title-center">Core Pillars of Student Adda</h2>
+        <div className="modern-features-container">
+          
+          <div className="modern-feature-box">
+            <div className="feature-icon">🔍</div>
+            <h3>Course Management</h3>
+            <p>Easy discovery and structural organization of academic subjects and technical skills in one place.</p>
           </div>
-          <div className="value-card">
-            <div className="value-icon">💡</div>
-            <h3>Learn by Doing</h3>
-            <p>Theory is only the beginning. We focus on hands-on projects, real-world applications, and structured learning paths.</p>
+
+          <div className="modern-feature-box">
+            <div className="feature-icon">📺</div>
+            <h3>Video Tracking</h3>
+            <p>Seamless learning experience with background persistence to save your exact watched time.</p>
           </div>
-          <div className="value-card">
-            <div className="value-icon">🤝</div>
-            <h3>Community Driven</h3>
-            <p>Learning is better together. We foster an environment of peer-to-peer engagement and mentorship to keep you motivated.</p>
+
+          <div className="modern-feature-box">
+            <div className="feature-icon">📊</div>
+            <h3>Dynamic Analytics</h3>
+            <p>Real-time calculation of student milestones based on unique lessons completed.</p>
           </div>
+
         </div>
       </section>
 
-      {/* Future Vision */}
-      <section className="about-section center-align footer-callout">
-        <div className="enhancement-icon">🚀</div>
-        <h2 className="section-heading">Looking to the Future</h2>
-        <p className="section-text">
-          We are constantly evolving. Our future roadmap includes AI-driven course recommendations tailored to your unique learning style and real-time peer messaging to ensure no student ever feels stuck.
+      {/* Simple Future Target */}
+      <footer className="dark-future-note">
+        <h3>What's Next?</h3>
+        <p>
+          We are currently working on adding automated course recommendations and integrated 
+          discussion panels to make peer learning easier.
         </p>
-        <button className="join-btn">Join Our Journey</button>
-      </section>
+      </footer>
     </div>
   );
 }
