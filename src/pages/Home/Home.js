@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Chatbot from '../../components/Chatbot/Chatbot';
 import './Home.css';
 
 function Home() {
@@ -166,6 +167,8 @@ function Home() {
           </div>
         </div>
       )}
+
+      <Chatbot />
     </div>
   );
 }
