@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Chatbot from '../../components/Chatbot/Chatbot';
 import './Home.css';
 
 function Home() {
@@ -62,6 +61,19 @@ function Home() {
     <div className="home-container">
       {/* Hero Section */}
       <header className="hero-section">
+        {/* Futuristic background grid pattern */}
+        <div className="hero-grid-overlay"></div>
+
+        {/* Left-side decorative background glowing shapes */}
+        <div className="abstract-shape left-shape-1"></div>
+        <div className="abstract-shape left-shape-2"></div>
+
+        {/* Floating background tech chips */}
+        <div className="floating-tech-chip chip-1">⚛️ React</div>
+        <div className="floating-tech-chip chip-2">🐍 Python</div>
+        <div className="floating-tech-chip chip-3">🤖 AI / ML</div>
+        <div className="floating-tech-chip chip-4">☁️ Cloud</div>
+
         <div className="hero-content">
           <div className="hero-badge">New: AI & Machine Learning Courses! 🚀</div>
           <h1 className="hero-title">Unlock Your Future in <span className="highlight">Tech</span></h1>
@@ -72,15 +84,50 @@ function Home() {
             <Link to="/courses" className="btn-primary">Explore Courses</Link>
             <a href="#features" className="btn-secondary">Learn More</a>
           </div>
+
+          {/* Core metrics panel underneath buttons */}
+          <div className="hero-stats">
+            <div className="stat-pill">
+              <span className="pill-number">50k+</span>
+              <span className="pill-text">Active Learners</span>
+            </div>
+            <div className="stat-pill">
+              <span className="pill-number">4.8★</span>
+              <span className="pill-text">Course Rating</span>
+            </div>
+            <div className="stat-pill">
+              <span className="pill-number">95%</span>
+              <span className="pill-text">Success Rate</span>
+            </div>
+          </div>
         </div>
         <div className="hero-image">
           {/* Abstract geometric shapes representing tech education */}
           <div className="abstract-shape shape-1"></div>
           <div className="abstract-shape shape-2"></div>
           <div className="abstract-shape shape-3"></div>
+          
+          {/* Main Card */}
           <div className="glass-card">
             <h3>Learn by Doing</h3>
             <p>100+ Hands-on Projects</p>
+          </div>
+
+          {/* Secondary Floating badges to fill left/right visual space */}
+          <div className="mini-glass-card floating-card-1">
+            <span className="mini-icon">👨‍🏫</span>
+            <div className="mini-details">
+              <h4>Expert Mentors</h4>
+              <p>Top Tech Engineers</p>
+            </div>
+          </div>
+          
+          <div className="mini-glass-card floating-card-2">
+            <span className="mini-icon">🏆</span>
+            <div className="mini-details">
+              <h4>Industry Certs</h4>
+              <p>Verified Credentials</p>
+            </div>
           </div>
         </div>
       </header>
@@ -167,8 +214,6 @@ function Home() {
           </div>
         </div>
       )}
-
-      <Chatbot />
     </div>
   );
 }

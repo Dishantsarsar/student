@@ -10,66 +10,194 @@ import Groq from 'groq-sdk';
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }));
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const apiKey = process.env.GROQ_API_KEY;
+let groq = null;
+if (apiKey && apiKey.trim() !== '' && !apiKey.includes('your_groq_api_key_here')) {
+  try {
+    groq = new Groq({ apiKey });
+    console.log('✅ Groq client initialized successfully.');
+  } catch (e) {
+    console.error('Failed to initialize Groq client:', e.message);
+  }
+} else {
+  console.warn('⚠️  WARNING: GROQ_API_KEY is missing or placeholder. Chatbot runs in local fallback mode.');
+}
 
-const SYSTEM_PROMPT = `You are a support assistant for "Solution Adda" — an online learning platform. Answer ONLY based on the facts below. If the question is not related to Solution Adda, politely say you can only answer about Solution Adda.
+/* ─────────────────────────────────────────────────────────────
+   COLLEGE YEAR → COURSE RECOMMENDATIONS MAP
+   ───────────────────────────────────────────────────────────── */
+const YEAR_RECOMMENDATIONS = {
+  '1st year': {
+    label: '1st Year College (Foundation)',
+    desc: 'Build strong programming fundamentals',
+    courses: ['C & C++ Programming', 'Python Programming', 'Web Development', 'Networking'],
+    reason: 'These courses build core programming fundamentals essential for all CS branches.'
+  },
+  '2nd year': {
+    label: '2nd Year College (Core CS)',
+    desc: 'Dive into data, databases and algorithms',
+    courses: ['Data Science', 'Database Management', 'Software Engineering', 'Java Development'],
+    reason: 'Perfect complement to your OS, DBMS, and algorithms coursework.'
+  },
+  '3rd year': {
+    label: '3rd Year College (Specialization)',
+    desc: 'Specialize in high-demand technologies',
+    courses: ['Machine Learning', 'Artificial Intelligence', 'Cloud Computing', 'Cyber Security'],
+    reason: 'Ideal for building specialization and internship-ready skills.'
+  },
+  '4th year': {
+    label: '4th Year College (Placement Ready)',
+    desc: 'Prepare for placements and jobs',
+    courses: ['Deep Learning', 'DevOps', 'Blockchain Development', 'Mobile App Development'],
+    reason: 'These advanced courses and interview prep will make you stand out in placements.'
+  }
+};
 
-ABOUT:
-Solution Adda is an online learning platform offering expert-led courses in Web Development, AI, Machine Learning, Data Science, Cloud Computing, and Python. Focus is on hands-on learning with real-world projects.
+/* ─────────────────────────────────────────────────────────────
+   STATIC PLATFORM INFO (always included)
+   ───────────────────────────────────────────────────────────── */
+const STATIC_CONTEXT = `
+PLATFORM INFO:
+- Name: Solution Adda — Premium Online Learning Platform (India)
+- Focus: Technology education with hands-on, project-based learning
+- All courses include: real projects, mentorship, certificates, community access
+- Certificates are industry-recognized and shareable on LinkedIn
+- Pricing: Competitive, EMI available, 7-day money-back guarantee
+- Support: support@solutionadda.com | Discord 24/7 | this chatbot
+- Enrollment: Click "Sign Up" top-right → choose course → start immediately
+- Self-paced learning with lifetime access
+- Community: Private Discord with 10,000+ members, weekly hackathons
+- Career support: resume review, mock interviews, alumni network, job board
 
-COURSES:
-- Web Development: HTML, CSS, JavaScript, React, Node.js, Express, MongoDB. Projects: E-Commerce Platform (Stripe), AI Chat Application.
-- AI & Machine Learning: Python, TensorFlow, PyTorch, NLP, Computer Vision.
-- Data Science: Statistics, data visualization, real-world analytics.
-- Cloud Computing, Python Programming also available.
+COLLEGE YEAR RECOMMENDATIONS:
+${Object.entries(YEAR_RECOMMENDATIONS).map(([year, data]) => `
+For ${data.label}:
+  Recommended courses: ${data.courses.join(', ')}
+  Why: ${data.reason}
+`).join('')}
 
-INSTRUCTORS:
-Vetted professionals with 10+ years from top companies like Google and Amazon.
+GENERAL FAQ:
+- No prior experience needed for beginner courses
+- Courses range from 3 to 8 months
+- Free first 2 lessons for every course — no credit card needed
+- Payment: UPI, Cards (Visa/Mastercard/RuPay), Net Banking, 0% EMI
+- Group/corporate discounts: sales@solutionadda.com
+`;
 
-CERTIFICATES:
-Industry-recognized certificates issued by Solution Adda & Partners after course completion.
+/* ─────────────────────────────────────────────────────────────
+   DYNAMIC SYSTEM PROMPT BUILDER
+   ───────────────────────────────────────────────────────────── */
+function buildSystemPrompt(courses = [], popularCourses = [], customKB = []) {
+  // Build course details section
+  let coursesSection = '';
+  if (courses.length > 0) {
+    coursesSection = `\nALL AVAILABLE COURSES (${courses.length} total):\n`;
+    courses.forEach((c, i) => {
+      coursesSection += `\n${i + 1}. ${c.emoji || '📚'} ${c.title} — ${c.level} | ${c.duration}\n`;
+      coursesSection += `   About: ${c.description}\n`;
+      if (c.syllabus && c.syllabus.length > 0) {
+        coursesSection += `   Topics covered: ${c.syllabus.join(', ')}\n`;
+      }
+    });
+  }
 
-PRICING:
-Competitive pricing, flexible payment options. Free introductory modules available. 7-day money-back guarantee.
+  // Build popular courses section
+  let popularSection = '';
+  if (popularCourses.length > 0) {
+    popularSection = `\nMOST POPULAR COURSES RIGHT NOW:\n`;
+    popularCourses.forEach((p, i) => {
+      popularSection += `${i + 1}. ${p.title} — ${p.enrollments} students enrolled\n`;
+    });
+  }
 
-ENROLLMENT:
-Click "Sign Up", create account, choose a course, start immediately. Self-paced, 4-12 weeks duration.
+  // Build custom KB section from admin training
+  let customSection = '';
+  if (customKB.length > 0) {
+    customSection = `\nADMIN-TRAINED KNOWLEDGE (highest priority — always answer these accurately):\n`;
+    customKB.forEach(item => {
+      customSection += `Q: ${item.question}\nA: ${item.answer}\n\n`;
+    });
+  }
 
-COMMUNITY:
-24/7 Discord access. Weekly hackathons, study groups, debugging help, mentorship from alumni.
+  return `You are "Adda AI", the intelligent virtual assistant for **Solution Adda** — a premium online learning platform.
 
-CONTACT:
-Email: support@solutionadda.com, Discord community, or this chat bot 24/7.
+Your personality:
+- Warm, encouraging, and knowledgeable — like a senior student or mentor
+- Use friendly language; occasional Hindi words are fine (e.g., "bilkul", "zaroor")
+- Keep answers concise but complete — use bullet points and numbered lists for readability
+- When recommending courses, always mention the duration and level
+- Always offer to help further at the end of your response
 
-CAREER SUPPORT:
-Portfolio projects, certificates, mock interviews, resume reviews, alumni network access.
+${STATIC_CONTEXT}
+${coursesSection}
+${popularSection}
+${customSection}
 
-Keep answers short, friendly, and helpful. Use simple English.`;
+IMPORTANT RULES:
+1. Only answer questions about Solution Adda or education/learning topics
+2. For unrelated questions (politics, weather, news), politely redirect: "I'm here for Solution Adda queries! Ask me about courses, pricing, or your learning path 😊"
+3. Never invent information not listed above
+4. If unsure about something specific, say: "For exact details, email support@solutionadda.com — they respond within 4 hours!"
+5. When asked about which course to take, always ask the user's background/year if not provided
+6. For "most popular" queries, use the popularity data provided above
+7. Custom admin-trained answers take highest priority over general knowledge
+8. Keep responses under 300 words unless deeply technical detail is needed`;
+}
 
+/* ─────────────────────────────────────────────────────────────
+   CHAT API ENDPOINT
+   ───────────────────────────────────────────────────────────── */
 app.post('/api/chat', async (req, res) => {
-  const { message } = req.body;
+  const {
+    message,
+    history = [],
+    courses = [],
+    popularCourses = [],
+    customKB = []
+  } = req.body;
+
   if (!message) return res.status(400).json({ error: 'Message is required' });
+
+  if (!groq) {
+    return res.status(503).json({
+      error: 'Groq chatbot is not configured. Please set GROQ_API_KEY in server/.env file.'
+    });
+  }
+
+  const systemPrompt = buildSystemPrompt(courses, popularCourses, customKB);
+
+  // Keep last 10 turns of history to maintain context without exceeding token limits
+  const recentHistory = history.slice(-10);
+  const messages = [
+    { role: 'system', content: systemPrompt },
+    ...recentHistory,
+    { role: 'user', content: message }
+  ];
 
   try {
     const completion = await groq.chat.completions.create({
-      model: 'llama-3.1-8b-instant',
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: message }
-      ],
-      temperature: 0.7,
-      max_tokens: 300,
+      model: 'llama-3.3-70b-versatile',
+      messages,
+      temperature: 0.65,
+      max_tokens: 600,
+      top_p: 0.9,
     });
 
-    const reply = completion.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+    const reply = completion.choices[0]?.message?.content?.trim()
+      || 'Sorry, I could not generate a response right now.';
     res.json({ reply });
   } catch (err) {
     console.error('Groq API error:', err.message);
-    res.status(500).json({ error: 'Failed to get response' });
+    res.status(500).json({ error: 'Failed to get response from AI. Try again in a moment.' });
   }
 });
 
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', groqConfigured: !!groq });
+});
+
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));

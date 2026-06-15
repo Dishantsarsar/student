@@ -56,7 +56,7 @@
   right: 28px;
   z-index: 9998;
   width: 380px;
-  height: 540px;
+  height: 580px;
   background: rgba(15, 12, 30, 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -125,6 +125,7 @@
   color: #4ade80;
   font-weight: 500;
   margin-top: 2px;
+  letter-spacing: 0.01em;
 }
 
 .chat-close {
@@ -204,6 +205,63 @@
 
 /* ─── Footer ─── */
 
+/* ─── Typing Indicator ─── */
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 18px !important;
+}
+
+.typing-indicator span {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: typingDot 1.2s ease-in-out infinite;
+}
+
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ─── Quick Suggestion Chips ─── */
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 8px 14px 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.suggestion-chip {
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  color: rgba(0, 242, 254, 0.9);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.76rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.suggestion-chip:hover {
+  background: rgba(0, 242, 254, 0.18);
+  border-color: rgba(0, 242, 254, 0.5);
+  transform: translateY(-1px);
+}
+
+/* ─── Footer ─── */
+
 .chat-foot {
   display: flex;
   align-items: center;
@@ -256,6 +314,86 @@
 .chat-send svg {
   width: 20px;
   height: 20px;
+}
+
+/* ─── Year Picker ─── */
+
+.year-picker {
+  background: rgba(10, 8, 28, 0.97);
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: 16px;
+  padding: 14px;
+  margin: 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeSlideUp 0.25s ease;
+}
+
+.year-picker-title {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 4px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.year-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  background: rgba(0, 242, 254, 0.07);
+  border: 1px solid rgba(0, 242, 254, 0.18);
+  border-radius: 10px;
+  color: #fff;
+  padding: 10px 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.year-btn:hover {
+  background: rgba(0, 242, 254, 0.16);
+  border-color: rgba(0, 242, 254, 0.45);
+  transform: translateX(3px);
+}
+
+.year-btn-sub {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.year-cancel {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.35);
+  padding: 6px;
+  font-size: 0.76rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 2px;
+}
+
+.year-cancel:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.chat-send:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 /* ─── Responsive ─── */

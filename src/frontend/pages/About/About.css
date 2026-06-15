@@ -1,0 +1,224 @@
+.about-page-container {
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #090615, #120e2e, #1c1444);
+  color: #ffffff;
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 5% 60px 5%;
+  /* Page load transition */
+  animation: pageTransition 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageTransition {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Background grid and glowing abstract shapes */
+.hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0),
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.abstract-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  background: rgba(0, 242, 254, 0.2);
+  animation: floatShape 8s ease-in-out infinite;
+}
+
+.shape-2 {
+  width: 250px;
+  height: 250px;
+  background: rgba(252, 0, 255, 0.2);
+  animation: floatShape 10s ease-in-out infinite reverse;
+}
+
+@keyframes floatShape {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+/* Hero Section styles */
+.about-hero {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 50px auto;
+  position: relative;
+  z-index: 1;
+}
+
+.about-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  color: #00f2fe;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  font-weight: 600;
+}
+
+.about-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  background: linear-gradient(90deg, #00f2fe, #4facfe, #fc00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
+}
+
+.about-subtitle {
+  font-size: 1.15rem;
+  color: #b0aec6;
+  line-height: 1.7;
+}
+
+/* Content Sections */
+.about-section {
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  position: relative;
+  z-index: 1;
+}
+
+.section-title-center {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+/* Glass Card */
+.about-glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 40px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-glass-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #00f2fe;
+}
+
+.about-glass-card p {
+  color: #b0aec6;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.about-glass-card strong {
+  color: #ffffff;
+}
+
+/* Interactive Card Effects */
+.concept-card-glow:hover {
+  border-color: rgba(0, 242, 254, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 242, 254, 0.08);
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.feature-hover-glow:hover {
+  transform: translateY(-5px);
+  border-color: rgba(79, 172, 254, 0.3);
+  box-shadow: 0 20px 45px rgba(79, 172, 254, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.feature-icon-wrapper {
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.feature-hover-glow h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+}
+
+.feature-hover-glow p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* Future target note */
+.future-note-card {
+  padding: 35px 40px;
+  border-left: 4px solid #00f2fe;
+}
+
+.future-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.future-header h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2.5rem;
+  }
+  .about-page-container {
+    padding-top: 40px;
+  }
+  .about-glass-card {
+    padding: 25px;
+  }
+}

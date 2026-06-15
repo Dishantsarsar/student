@@ -1,0 +1,472 @@
+/* ─── Dashboard Containers ─── */
+
+.dashboard-page {
+  min-height: calc(100vh - 80px);
+  padding: 60px 40px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  z-index: 1;
+}
+
+.dashboard-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #0a0a1a;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── Sidebar Profile Card ─── */
+
+.profile-sidebar {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 40px 30px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3);
+}
+
+.profile-sidebar h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+  letter-spacing: -0.02em;
+}
+
+.profile-email {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+
+.profile-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(0, 242, 254, 0.1);
+  color: #00f2fe;
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  margin-bottom: 30px;
+}
+
+.profile-badge.admin-badge {
+  background: rgba(252, 0, 255, 0.1);
+  color: #fc00ff;
+  border: 1px solid rgba(252, 0, 255, 0.25);
+}
+
+.profile-stats {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.stat-lbl {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ─── Main Content Panels ─── */
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.dashboard-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dashboard-header-row h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* ─── Grid layouts ─── */
+
+.dashboard-section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 24px;
+}
+
+.empty-dashboard-state {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 50px 30px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.empty-dashboard-state .emoji {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+.empty-dashboard-state h4 {
+  font-size: 1.15rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.empty-dashboard-state button {
+  margin-top: 15px;
+}
+
+/* ─── Admin Tools ─── */
+
+.admin-action-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  border: none;
+  border-radius: 12px;
+  color: #0a0a1a;
+  font-weight: 700;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+}
+
+.admin-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 242, 254, 0.3);
+}
+
+.courses-list-table-container {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-table th {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-table td {
+  font-size: 0.95rem;
+}
+
+.table-course-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.table-emoji {
+  font-size: 1.3rem;
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.table-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+}
+
+.table-btn.edit {
+  background: rgba(0, 242, 254, 0.1);
+  color: #00f2fe;
+  border: 1px solid rgba(0, 242, 254, 0.2);
+}
+
+.table-btn.edit:hover {
+  background: #00f2fe;
+  color: #0a0a1a;
+}
+
+.table-btn.delete {
+  background: rgba(252, 0, 255, 0.1);
+  color: #fc00ff;
+  border: 1px solid rgba(252, 0, 255, 0.2);
+}
+
+.table-btn.delete:hover {
+  background: #fc00ff;
+  color: #fff;
+}
+
+/* ─── Form Dialog / Panel ─── */
+
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 26, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.form-content-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 650px;
+  padding: 35px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-content-card h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  letter-spacing: -0.02em;
+}
+
+.form-group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: #fff;
+  outline: none;
+  transition: all 0.25s;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: #00f2fe;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Dynamic Syllabus Builder ─── */
+
+.syllabus-builder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.syllabus-builder-header span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-add-item {
+  padding: 6px 12px;
+  background: rgba(0, 242, 254, 0.1);
+  color: #00f2fe;
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.btn-add-item:hover {
+  background: #00f2fe;
+  color: #0a0a1a;
+}
+
+.syllabus-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.syllabus-input-row input {
+  flex: 1;
+}
+
+.btn-remove-item {
+  padding: 0 12px;
+  background: rgba(252, 0, 255, 0.1);
+  color: #fc00ff;
+  border: 1px solid rgba(252, 0, 255, 0.2);
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.btn-remove-item:hover {
+  background: #fc00ff;
+  color: #fff;
+}
+
+.form-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 20px;
+}
+
+.btn-cancel {
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+/* ─── Responsive ─── */
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+  .profile-sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 30px 15px;
+  }
+  .dashboard-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .admin-table th, .admin-table td {
+    padding: 12px;
+  }
+  .table-actions {
+    flex-direction: column;
+  }
+}
