@@ -16,8 +16,8 @@
   },
   "scripts": {
     "react-start": "react-scripts start",
-    "dev": "concurrently --kill-others \"npm run react-start\" \"npm --prefix server start\"",
-    "start": "concurrently --kill-others \"npm run react-start\" \"npm --prefix server start\"",
+    "dev": "node scripts/start.js",
+    "start": "node scripts/start.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

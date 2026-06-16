@@ -30,13 +30,19 @@ const EyeIcon = ({ open }) => (
   </svg>
 );
 
-const initialSignup = { name: '', email: '', password: '' };
+const ShieldIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  </svg>
+);
+
+const initialSignup = { name: '', email: '', password: '', role: 'user' };
 const initialLogin = { email: '', password: '' };
 
 function Auth() {
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(location.state?.isLogin ?? false);
-  const [form, setForm] = useState(location.state?.isLogin ? initialLogin : initialSignup);
+  const [form, setForm] = useState(location.state?.isLogin ? initialLogin : { ...initialSignup });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -44,13 +50,13 @@ function Auth() {
   useEffect(() => {
     const target = location.state?.isLogin ?? false;
     setIsLogin(target);
-    setForm(target ? initialLogin : initialSignup);
+    setForm(target ? { ...initialLogin } : { ...initialSignup });
     setErrors({});
   }, [location.state?.isLogin]);
 
   const toggleMode = () => {
     setIsLogin((prev) => !prev);
-    setForm((prev) => (prev === initialLogin ? initialSignup : initialLogin));
+    setForm((prev) => (prev.email !== undefined ? (prev.name !== undefined ? initialLogin : initialSignup) : (prev.name !== undefined ? initialLogin : initialSignup)));
     setErrors({});
   };
 
@@ -77,8 +83,28 @@ function Auth() {
       setErrors(errs);
       return;
     }
-    console.log('Submitted:', form);
-    navigate('/');
+
+    if (isLogin) {
+      const users = JSON.parse(localStorage.getItem('sa_users') || '[]');
+      const user = users.find((u) => u.email === form.email && u.password === form.password);
+      if (!user) {
+        setErrors({ email: 'Invalid email or password' });
+        return;
+      }
+      localStorage.setItem('sa_user', JSON.stringify({ name: user.name, email: user.email, role: user.role }));
+      navigate(user.role === 'admin' ? '/admin' : '/');
+    } else {
+      const users = JSON.parse(localStorage.getItem('sa_users') || '[]');
+      if (users.find((u) => u.email === form.email)) {
+        setErrors({ email: 'Email already registered' });
+        return;
+      }
+      const newUser = { name: form.name.trim(), email: form.email, password: form.password, role: form.role };
+      users.push(newUser);
+      localStorage.setItem('sa_users', JSON.stringify(users));
+      localStorage.setItem('sa_user', JSON.stringify({ name: newUser.name, email: newUser.email, role: newUser.role }));
+      navigate(newUser.role === 'admin' ? '/admin' : '/');
+    }
   };
 
   return (
@@ -92,10 +118,10 @@ function Auth() {
       <div className="auth-card">
         <div className="auth-toggle">
           <div className={`toggle-slider ${isLogin ? '' : 'right'}`} />
-          <button type="button" className={`toggle-btn ${isLogin ? 'active' : ''}`} onClick={() => isLogin && toggleMode()}>
+          <button type="button" className={`toggle-btn ${isLogin ? 'active' : ''}`} onClick={() => !isLogin && toggleMode()}>
             Sign In
           </button>
-          <button type="button" className={`toggle-btn ${!isLogin ? 'active' : ''}`} onClick={() => !isLogin && toggleMode()}>
+          <button type="button" className={`toggle-btn ${!isLogin ? 'active' : ''}`} onClick={() => isLogin && toggleMode()}>
             Sign Up
           </button>
         </div>
@@ -106,6 +132,23 @@ function Auth() {
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
+          {!isLogin && (
+            <div className="field">
+              <label>Account Type</label>
+              <div className="field-wrap role-wrap">
+                <span className="field-icon"><ShieldIcon /></span>
+                <label className={`role-option ${form.role === 'user' ? 'active' : ''}`}>
+                  <input type="radio" name="role" value="user" checked={form.role === 'user'} onChange={handleChange} />
+                  User
+                </label>
+                <label className={`role-option ${form.role === 'admin' ? 'active' : ''}`}>
+                  <input type="radio" name="role" value="admin" checked={form.role === 'admin'} onChange={handleChange} />
+                  Admin
+                </label>
+              </div>
+            </div>
+          )}
+
           {!isLogin && (
             <div className={`field ${errors.name ? 'error' : ''}`}>
               <label>Full Name</label>
