@@ -7,6 +7,7 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 import express from 'express';
 import cors from 'cors';
 import Groq from 'groq-sdk';
+import Razorpay from 'razorpay';
 
 const app = express();
 app.use(cors());
@@ -23,6 +24,26 @@ if (apiKey && apiKey.trim() !== '' && !apiKey.includes('your_groq_api_key_here')
   }
 } else {
   console.warn('⚠️  WARNING: GROQ_API_KEY is missing or placeholder. Chatbot runs in local fallback mode.');
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RAZORPAY INITIALIZATION
+   ───────────────────────────────────────────────────────────── */
+const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
+const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
+let razorpay = null;
+if (razorpayKeyId && razorpayKeySecret && !razorpayKeyId.includes('your_razorpay_key_id')) {
+  try {
+    razorpay = new Razorpay({
+      key_id: razorpayKeyId,
+      key_secret: razorpayKeySecret,
+    });
+    console.log('✅ Razorpay initialized successfully.');
+  } catch (e) {
+    console.error('Failed to initialize Razorpay:', e.message);
+  }
+} else {
+  console.warn('⚠️  WARNING: RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET missing. Payment API disabled.');
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -194,9 +215,43 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
+/* ─────────────────────────────────────────────────────────────
+   RAZORPAY ORDER CREATION ENDPOINT
+   ───────────────────────────────────────────────────────────── */
+app.post('/api/create-order', async (req, res) => {
+  const { amount, currency = 'INR' } = req.body;
+
+  if (!amount || amount <= 0) {
+    return res.status(400).json({ error: 'Invalid amount' });
+  }
+
+  if (!razorpay) {
+    return res.status(503).json({
+      error: 'Razorpay is not configured. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in server/.env file.'
+    });
+  }
+
+  try {
+    const order = await razorpay.orders.create({
+      amount: Math.round(amount * 100),
+      currency,
+      receipt: `receipt_${Date.now()}`,
+    });
+    res.json(order);
+  } catch (err) {
+    console.error('Razorpay order creation error:', err.message);
+    res.status(500).json({ error: 'Failed to create payment order' });
+  }
+});
+
+// Razorpay key endpoint (frontend needs the key ID to initialize checkout)
+app.get('/api/razorpay-key', (req, res) => {
+  res.json({ key: razorpayKeyId || '' });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', groqConfigured: !!groq });
+  res.json({ status: 'ok', groqConfigured: !!groq, razorpayConfigured: !!razorpay });
 });
 
 const PORT = process.env.PORT || 4000;

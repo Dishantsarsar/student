@@ -9,6 +9,7 @@ import About from './frontend/pages/About/About';
 import UserDashboard from './frontend/pages/Dashboard/UserDashboard';
 import TeacherDashboard from './frontend/pages/Dashboard/TeacherDashboard';
 import AdminDashboard from './frontend/pages/Dashboard/AdminDashboard';
+import WatchCourse from './frontend/pages/WatchCourse/WatchCourse';
 import Chatbot from './frontend/components/Chatbot/Chatbot';
 import './App.css';
 
@@ -66,6 +67,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/watch/:courseTitle"
+              element={
+                <ProtectedRoute allowedRoles={['user', 'teacher', 'admin']}>
+                  <WatchCourse />
                 </ProtectedRoute>
               }
             />

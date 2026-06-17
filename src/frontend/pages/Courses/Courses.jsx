@@ -5,6 +5,7 @@ import { coursesData } from "../../../backend/coursesData";
 import FilterSection from "./FilterSection";
 import CourseCard from "./CourseCard";
 import CourseModal from "./CourseModal";
+import { getPurchasedCourses } from "../../services/paymentService";
 
 function Courses() {
   const navigate = useNavigate();
@@ -12,7 +13,20 @@ function Courses() {
     const storedCourses = localStorage.getItem("all_courses");
     if (storedCourses) {
       try {
-        return JSON.parse(storedCourses);
+        const parsed = JSON.parse(storedCourses);
+        const merged = coursesData.map((defaultCourse) => {
+          const stored = parsed.find((c) => c.title === defaultCourse.title);
+          if (stored) {
+            return { ...defaultCourse, ...stored };
+          }
+          return defaultCourse;
+        });
+        const extraCourses = parsed.filter(
+          (c) => !coursesData.some((d) => d.title === c.title)
+        );
+        const result = [...merged, ...extraCourses];
+        localStorage.setItem("all_courses", JSON.stringify(result));
+        return result;
       } catch (e) {
         console.error("Failed to parse stored courses", e);
       }
@@ -25,6 +39,7 @@ function Courses() {
   const [selectedLevel, setSelectedLevel] = useState("All");
   const [favorites, setFavorites] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
+  const [purchased, setPurchased] = useState([]);
   const [completedSyllabusItems, setCompletedSyllabusItems] = useState({});
   const [sortBy, setSortBy] = useState("default");
   const [activeCourse, setActiveCourse] = useState(null);
@@ -47,6 +62,9 @@ function Courses() {
         if (storedEnrolled) {
           setEnrolled(JSON.parse(storedEnrolled));
         }
+
+        const storedPurchased = getPurchasedCourses(currentUser.email);
+        setPurchased(storedPurchased);
 
         const storedProgress = localStorage.getItem(`syllabus_progress_${currentUser.email}`);
         if (storedProgress) {
@@ -76,6 +94,19 @@ function Courses() {
     }
     setFavorites(updatedFavorites);
     localStorage.setItem(`fav_courses_${currentUser.email}`, JSON.stringify(updatedFavorites));
+  };
+
+  // Refresh purchased courses after a purchase
+  const handlePurchaseSuccess = (courseTitle) => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const currentUser = JSON.parse(userStr);
+      const updated = getPurchasedCourses(currentUser.email);
+      setPurchased(updated);
+      if (!enrolled.includes(courseTitle)) {
+        setEnrolled([...enrolled, courseTitle]);
+      }
+    }
   };
 
   // Toggle enrollment
@@ -213,18 +244,21 @@ function Courses() {
               (completedCount / course.syllabus.length) * 100
             );
 
+            const isPurchased = purchased.includes(course.title);
+
             return (
-              <CourseCard
-                key={index}
-                course={course}
-                isFav={isFav}
-                isEnrolled={isEnrolled}
-                completedCount={completedCount}
-                progressPercentage={progressPercentage}
-                toggleFavorite={toggleFavorite}
-                setActiveCourse={setActiveCourse}
-              />
-            );
+                <CourseCard
+                  key={index}
+                  course={course}
+                  isFav={isFav}
+                  isEnrolled={isEnrolled}
+                  isPurchased={isPurchased}
+                  completedCount={completedCount}
+                  progressPercentage={progressPercentage}
+                  toggleFavorite={toggleFavorite}
+                  setActiveCourse={setActiveCourse}
+                />
+              );
           })
         ) : (
           <div className="no-results">
@@ -240,9 +274,11 @@ function Courses() {
         activeCourse={activeCourse}
         setActiveCourse={setActiveCourse}
         enrolled={enrolled}
+        purchased={purchased}
         completedSyllabusItems={completedSyllabusItems}
         toggleEnroll={toggleEnroll}
         toggleSyllabusItem={toggleSyllabusItem}
+        onPurchaseSuccess={handlePurchaseSuccess}
       />
     </div>
   );

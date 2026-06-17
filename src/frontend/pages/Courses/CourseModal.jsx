@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { processPayment } from "../../services/paymentService";
 
 function CourseModal({
   activeCourse,
   setActiveCourse,
   enrolled,
+  purchased,
   completedSyllabusItems,
   toggleEnroll,
   toggleSyllabusItem,
+  onPurchaseSuccess,
 }) {
+  const navigate = useNavigate();
+  const [paying, setPaying] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) setCurrentUser(JSON.parse(userStr));
+  }, []);
+
   if (!activeCourse) return null;
 
   const isEnrolled = enrolled.includes(activeCourse.title);
-  
+  const isPurchased = purchased?.includes(activeCourse.title);
+
   const getCompletedCount = (courseTitle, syllabusArray) => {
     return syllabusArray.reduce((acc, _, idx) => {
       return acc + (completedSyllabusItems[`${courseTitle}-${idx}`] ? 1 : 0);
@@ -22,6 +36,34 @@ function CourseModal({
   const progressPercentage = Math.round(
     (completedCount / activeCourse.syllabus.length) * 100
   );
+
+  const handleBuyNow = async () => {
+    if (!currentUser) {
+      alert("Please sign in first.");
+      navigate("/auth", { state: { isLogin: true } });
+      return;
+    }
+    setPaying(true);
+    await processPayment(
+      activeCourse.title,
+      activeCourse.price,
+      (response) => {
+        setPaying(false);
+        alert(`Payment successful! You now have access to ${activeCourse.title} videos.`);
+        if (onPurchaseSuccess) onPurchaseSuccess(activeCourse.title);
+      },
+      (error) => {
+        setPaying(false);
+        if (error.message !== "Payment cancelled by user") {
+          alert(error.message);
+        }
+      }
+    );
+  };
+
+  const handleWatchVideos = () => {
+    navigate(`/watch/${encodeURIComponent(activeCourse.title)}`);
+  };
 
   return (
     <div className="modal-overlay" onClick={() => setActiveCourse(null)}>
@@ -50,6 +92,9 @@ function CourseModal({
             <h2>{activeCourse.title}</h2>
             <p>
               {activeCourse.level} • {activeCourse.duration}
+              {activeCourse.price && !isPurchased && (
+                <span className="modal-price-tag">  •  ₹{activeCourse.price.toLocaleString("en-IN")}</span>
+              )}
             </p>
           </div>
         </div>
@@ -60,8 +105,28 @@ function CourseModal({
             <p>{activeCourse.description}</p>
           </div>
 
-          {/* Progress bar in Modal if Enrolled */}
-          {isEnrolled && (
+          {isPurchased && activeCourse.videos && activeCourse.videos.length > 0 && (
+            <div className="modal-video-preview">
+              <h4>📹 Course Videos ({activeCourse.videos.length})</h4>
+              <div className="video-preview-list">
+                {activeCourse.videos.slice(0, 3).map((v, idx) => (
+                  <div key={idx} className="video-preview-item">
+                    <span className="video-preview-icon">▶️</span>
+                    <span className="video-preview-title">{v.title}</span>
+                    <span className="video-preview-duration">{v.duration}</span>
+                  </div>
+                ))}
+                {activeCourse.videos.length > 3 && (
+                  <div className="video-preview-more">
+                    +{activeCourse.videos.length - 3} more videos
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Progress bar in Modal if Purchased */}
+          {isPurchased && (
             <div className="modal-progress-section">
               <div className="modal-progress-text">
                 <span>Syllabus Progress Tracker</span>
@@ -78,13 +143,13 @@ function CourseModal({
 
           <div className="modal-section">
             <h4>Syllabus Details</h4>
-            {isEnrolled ? (
+            {isPurchased ? (
               <p className="syllabus-instruction">
                 Click checklist items to mark them as completed:
               </p>
             ) : (
               <p className="syllabus-instruction disabled">
-                Enroll in this course to track your progress.
+                Purchase this course to unlock all content & track progress.
               </p>
             )}
 
@@ -97,10 +162,10 @@ function CourseModal({
                     key={idx}
                     className={`syllabus-item-interactive ${
                       isCompleted ? "completed" : ""
-                    } ${!isEnrolled ? "disabled" : ""}`}
-                    onClick={() => isEnrolled && toggleSyllabusItem(activeCourse.title, idx)}
+                    } ${!isPurchased ? "disabled" : ""}`}
+                    onClick={() => isPurchased && toggleSyllabusItem(activeCourse.title, idx)}
                   >
-                    {isEnrolled ? (
+                    {isPurchased ? (
                       <div className="custom-checkbox-wrapper">
                         <input
                           type="checkbox"
@@ -111,7 +176,7 @@ function CourseModal({
                         <span className="custom-checkbox-box"></span>
                       </div>
                     ) : (
-                      <span className="syllabus-bullet-emoji">⚡</span>
+                      <span className="syllabus-bullet-emoji">🔒</span>
                     )}
                     <span className="syllabus-item-text">{item}</span>
                   </li>
@@ -122,27 +187,47 @@ function CourseModal({
         </div>
 
         <div className="modal-actions">
-          {isEnrolled ? (
-            <button
-              className="enroll-btn leave-btn"
-              onClick={() => {
-                toggleEnroll(activeCourse.title);
-                setActiveCourse(null);
-              }}
-            >
-              Leave Course (Reset Progress)
-            </button>
-          ) : (
-            <button
-              className="enroll-btn"
-              onClick={() => {
-                toggleEnroll(activeCourse.title);
-                alert(`Successfully Enrolled in ${activeCourse.title}! Happy learning!`);
-              }}
-            >
-              Enroll in Course
-            </button>
-          )}
+          {isPurchased ? (
+            <>
+              <button className="enroll-btn watch-btn" onClick={handleWatchVideos}>
+                📺 Watch Course Videos
+              </button>
+              {isEnrolled && (
+                <button
+                  className="enroll-btn leave-btn"
+                  onClick={() => {
+                    toggleEnroll(activeCourse.title);
+                    setActiveCourse(null);
+                  }}
+                >
+                  Leave Course (Reset Progress)
+                </button>
+              )}
+            </>
+          ) : activeCourse.price ? (
+            <div className="buy-only-section">
+              <div className="buy-highlight-box">
+                <div className="buy-price-display">
+                  <span className="buy-label">Course Price</span>
+                  <span className="buy-price">₹{activeCourse.price.toLocaleString("en-IN")}</span>
+                </div>
+                <ul className="buy-perks">
+                  <li>✅ Full lifetime access</li>
+                  <li>✅ HD video lectures</li>
+                  <li>✅ Certificate of completion</li>
+                  <li>✅ Progress tracking</li>
+                </ul>
+              </div>
+              <button
+                className="enroll-btn buy-btn buy-main-btn"
+                onClick={handleBuyNow}
+                disabled={paying}
+              >
+                {paying ? "⏳ Processing..." : `💳 Buy Now — ₹${activeCourse.price.toLocaleString("en-IN")}`}
+              </button>
+              <p className="buy-secure-note">🔒 Secure payment via Razorpay · UPI · Cards · NetBanking</p>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

@@ -1,0 +1,275 @@
+.watch-course-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #090615, #120e2e, #1c1444);
+  padding: 40px 30px;
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  color: #fff;
+}
+
+.watch-course-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 30px;
+  align-items: start;
+}
+
+.video-main-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.video-player-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+}
+
+.video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.no-video-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.2rem;
+}
+
+.no-video-placeholder span {
+  font-size: 4rem;
+}
+
+.video-info {
+  padding: 24px;
+}
+
+.video-info h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #00f2fe, #fc00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.video-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #b0aec6;
+  font-size: 0.9rem;
+}
+
+.video-duration {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #00f2fe;
+}
+
+.playlist-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 24px;
+  position: sticky;
+  top: 100px;
+}
+
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.playlist-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.playlist-count {
+  font-size: 0.85rem;
+  color: #b0aec6;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.playlist-videos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.playlist-videos::-webkit-scrollbar {
+  width: 4px;
+}
+
+.playlist-videos::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.playlist-videos::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+}
+
+.playlist-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.playlist-item.active {
+  background: rgba(0, 242, 254, 0.08);
+  border-color: rgba(0, 242, 254, 0.25);
+}
+
+.playlist-item.watched {
+  opacity: 0.7;
+}
+
+.playlist-item-index {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.playlist-item.active .playlist-item-index {
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  color: #000;
+}
+
+.playlist-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.playlist-item-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-item.active .playlist-item-title {
+  color: #00f2fe;
+}
+
+.playlist-item-duration {
+  font-size: 0.75rem;
+  color: #b0aec6;
+}
+
+.no-videos-msg {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 30px;
+  font-style: italic;
+}
+
+.loading-state,
+.unauthorized-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 20px;
+  text-align: center;
+}
+
+.lock-icon {
+  font-size: 5rem;
+}
+
+.unauthorized-state h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff3366, #fc00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.unauthorized-state p {
+  color: #b0aec6;
+  font-size: 1.05rem;
+  max-width: 400px;
+}
+
+.back-btn {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 242, 254, 0.35);
+}
+
+@media (max-width: 900px) {
+  .watch-course-container {
+    grid-template-columns: 1fr;
+  }
+  .playlist-section {
+    position: static;
+  }
+  .watch-course-page {
+    padding: 20px 15px;
+  }
+}

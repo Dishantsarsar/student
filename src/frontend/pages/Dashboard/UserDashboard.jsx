@@ -4,12 +4,14 @@ import "./Dashboard.css";
 import { coursesData } from "../../../backend/coursesData";
 import CourseModal from "../Courses/CourseModal";
 import CourseCard from "../Courses/CourseCard";
+import { getPurchasedCourses } from "../../services/paymentService";
 
 function UserDashboard() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
   const [courses, setCourses] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
+  const [purchased, setPurchased] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [completedSyllabusItems, setCompletedSyllabusItems] = useState({});
   const [activeCourse, setActiveCourse] = useState(null);
@@ -28,10 +30,29 @@ function UserDashboard() {
     }
     setCurrentUser(user);
 
-    // Sync courses from localStorage
+    // Sync courses from localStorage (merge with defaults)
     const storedCourses = localStorage.getItem("all_courses");
     if (storedCourses) {
-      setCourses(JSON.parse(storedCourses));
+      try {
+        const parsed = JSON.parse(storedCourses);
+        const merged = coursesData.map((defaultCourse) => {
+          const stored = parsed.find((c) => c.title === defaultCourse.title);
+          if (stored) {
+            return { ...defaultCourse, ...stored };
+          }
+          return defaultCourse;
+        });
+        const extraCourses = parsed.filter(
+          (c) => !coursesData.some((d) => d.title === c.title)
+        );
+        const result = [...merged, ...extraCourses];
+        setCourses(result);
+        localStorage.setItem("all_courses", JSON.stringify(result));
+      } catch (e) {
+        console.error("Failed to parse stored courses", e);
+        localStorage.setItem("all_courses", JSON.stringify(coursesData));
+        setCourses(coursesData);
+      }
     } else {
       localStorage.setItem("all_courses", JSON.stringify(coursesData));
       setCourses(coursesData);
@@ -42,6 +63,10 @@ function UserDashboard() {
     if (storedEnrolled) {
       setEnrolled(JSON.parse(storedEnrolled));
     }
+
+    // Sync purchased
+    const storedPurchased = getPurchasedCourses(user.email);
+    setPurchased(storedPurchased);
 
     // Sync favorites
     const storedFavorites = localStorage.getItem(`fav_courses_${user.email}`);
@@ -67,8 +92,23 @@ function UserDashboard() {
       const storedEnrolled = localStorage.getItem(`enrolled_courses_${user.email}`);
       if (storedEnrolled) setEnrolled(JSON.parse(storedEnrolled));
       
+      const storedPurchased = getPurchasedCourses(user.email);
+      setPurchased(storedPurchased);
+
       const storedProgress = localStorage.getItem(`syllabus_progress_${user.email}`);
       if (storedProgress) setCompletedSyllabusItems(JSON.parse(storedProgress));
+    }
+  };
+
+  const handlePurchaseSuccess = (courseTitle) => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      const updated = getPurchasedCourses(user.email);
+      setPurchased(updated);
+      if (!enrolled.includes(courseTitle)) {
+        setEnrolled([...enrolled, courseTitle]);
+      }
     }
   };
 
@@ -146,8 +186,8 @@ function UserDashboard() {
 
   if (!currentUser) return null;
 
-  // Filter courses that are enrolled or favorited
-  const enrolledCourses = courses.filter((c) => enrolled.includes(c.title));
+  // Only show purchased courses as enrolled (no free enrollment)
+  const enrolledCourses = courses.filter((c) => purchased.includes(c.title));
   const favoriteCourses = courses.filter((c) => favorites.includes(c.title));
 
   return (
@@ -184,14 +224,14 @@ function UserDashboard() {
             <h2>Welcome Back, {currentUser.name.split(" ")[0]}!</h2>
           </div>
 
-          {/* Enrolled Courses Progress Grid */}
+          {/* Purchased Courses (only after real payment) */}
           <section>
             <h3 className="dashboard-section-title">
-              <span>📖</span> Enrolled Courses Progress
+              <span>📺</span> My Video Courses
             </h3>
             {enrolledCourses.length > 0 ? (
               <div className="dashboard-card-grid">
-                {enrolledCourses.map((course, idx) => {
+                  {enrolledCourses.map((course, idx) => {
                   const completed = getCompletedCount(course.title, course.syllabus);
                   const percentage = Math.round((completed / course.syllabus.length) * 100);
 
@@ -201,6 +241,7 @@ function UserDashboard() {
                       course={course}
                       isFav={favorites.includes(course.title)}
                       isEnrolled={true}
+                      isPurchased={true}
                       completedCount={completed}
                       progressPercentage={percentage}
                       toggleFavorite={toggleFavorite}
@@ -211,9 +252,9 @@ function UserDashboard() {
               </div>
             ) : (
               <div className="empty-dashboard-state">
-                <div className="emoji">📝</div>
-                <h4>No Enrolled Courses</h4>
-                <p>You haven't enrolled in any courses yet. Start your journey today!</p>
+                <div className="emoji">🎬</div>
+                <h4>No Purchased Courses</h4>
+                <p>Buy a course to start watching videos and tracking your progress!</p>
                 <button className="admin-action-btn" onClick={() => navigate("/courses")}>
                   Browse Courses
                 </button>
@@ -230,6 +271,7 @@ function UserDashboard() {
               <div className="dashboard-card-grid">
                 {favoriteCourses.map((course, idx) => {
                   const isEnrolled = enrolled.includes(course.title);
+                  const isPurchased = purchased.includes(course.title);
                   const completed = getCompletedCount(course.title, course.syllabus);
                   const percentage = Math.round((completed / course.syllabus.length) * 100);
 
@@ -239,6 +281,7 @@ function UserDashboard() {
                       course={course}
                       isFav={true}
                       isEnrolled={isEnrolled}
+                      isPurchased={isPurchased}
                       completedCount={completed}
                       progressPercentage={percentage}
                       toggleFavorite={toggleFavorite}
@@ -270,12 +313,16 @@ function UserDashboard() {
               if (storedProgress) setCompletedSyllabusItems(JSON.parse(storedProgress));
               const storedEnrolled = localStorage.getItem(`enrolled_courses_${currentUser.email}`);
               if (storedEnrolled) setEnrolled(JSON.parse(storedEnrolled));
+              const storedPurchased = getPurchasedCourses(currentUser.email);
+              setPurchased(storedPurchased);
             }
           }}
           enrolled={enrolled}
+          purchased={purchased}
           completedSyllabusItems={completedSyllabusItems}
           toggleEnroll={toggleEnroll}
           toggleSyllabusItem={toggleSyllabusItem}
+          onPurchaseSuccess={handlePurchaseSuccess}
         />
       )}
     </div>

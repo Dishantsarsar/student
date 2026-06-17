@@ -17,6 +17,7 @@ function TeacherDashboard() {
   const [formLevel, setFormLevel] = useState("Beginner");
   const [formDuration, setFormDuration] = useState("");
   const [formEmoji, setFormEmoji] = useState("💻");
+  const [formPrice, setFormPrice] = useState("");
   const [syllabusItems, setSyllabusItems] = useState([""]);
 
   // Authentication check & sync
@@ -49,6 +50,7 @@ function TeacherDashboard() {
     setFormLevel("Beginner");
     setFormDuration("");
     setFormEmoji("💻");
+    setFormPrice("");
     setSyllabusItems([""]);
     setIsEditMode(false);
     setEditIndex(-1);
@@ -65,6 +67,7 @@ function TeacherDashboard() {
     setFormLevel(course.level);
     setFormDuration(course.duration);
     setFormEmoji(course.emoji || "💻");
+    setFormPrice(course.price ? String(course.price) : "");
     setSyllabusItems(course.syllabus && course.syllabus.length > 0 ? [...course.syllabus] : [""]);
     setIsEditMode(true);
     setEditIndex(index);
@@ -128,6 +131,7 @@ function TeacherDashboard() {
       level: formLevel,
       duration: formDuration,
       emoji: formEmoji,
+      price: formPrice ? Number(formPrice) : undefined,
       syllabus: filteredSyllabus,
       addedBy: isEditMode ? (courses[editIndex].addedBy || "system") : currentUser.email,
       addedByName: isEditMode ? (courses[editIndex].addedByName || "System") : currentUser.name
@@ -304,6 +308,25 @@ function TeacherDashboard() {
                     placeholder="e.g. 🧠"
                     required
                   />
+                </div>
+              </div>
+
+              <div className="form-group-row">
+                <div className="form-field">
+                  <label>Price (₹) — Leave empty for free</label>
+                  <input
+                    type="number"
+                    value={formPrice}
+                    onChange={(e) => setFormPrice(e.target.value)}
+                    placeholder="e.g. 1999"
+                    min="0"
+                  />
+                </div>
+                <div className="form-field">
+                  <label>&nbsp;</label>
+                  <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.82rem", marginTop: "8px" }}>
+                    💡 Set a price for video access. Free courses show "Enroll" only.
+                  </p>
                 </div>
               </div>
 

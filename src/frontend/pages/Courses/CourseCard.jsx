@@ -4,6 +4,7 @@ function CourseCard({
   course,
   isFav,
   isEnrolled,
+  isPurchased,
   completedCount,
   progressPercentage,
   toggleFavorite,
@@ -11,13 +12,13 @@ function CourseCard({
 }) {
   return (
     <div
-      className={`course-card ${isEnrolled ? "enrolled" : ""}`}
+      className={`course-card ${isEnrolled ? "enrolled" : ""} ${isPurchased ? "purchased" : ""}`}
       onClick={() => setActiveCourse(course)}
     >
       <div className="card-top">
         <div className="course-icon-badge-row">
           <div className="course-icon">{course.emoji}</div>
-          {isEnrolled && <span className="enrolled-badge">Enrolled</span>}
+          {isPurchased && <span className="purchased-badge">✅ Purchased</span>}
         </div>
         <button
           className={`favorite-btn ${isFav ? "active" : ""}`}
@@ -43,6 +44,10 @@ function CourseCard({
         <h3>{course.title}</h3>
         <p className="course-desc">{course.description}</p>
       </div>
+
+      {course.price && !isPurchased && (
+        <div className="course-price-tag">₹{course.price.toLocaleString("en-IN")}</div>
+      )}
 
       {/* Progress Bar inside Card if Enrolled */}
       {isEnrolled && (

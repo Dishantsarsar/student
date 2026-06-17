@@ -28,6 +28,7 @@ function AdminDashboard() {
   const [formLevel, setFormLevel] = useState("Beginner");
   const [formDuration, setFormDuration] = useState("");
   const [formEmoji, setFormEmoji] = useState("💻");
+  const [formPrice, setFormPrice] = useState("");
   const [syllabusItems, setSyllabusItems] = useState([""]);
   const [formAddedBy, setFormAddedBy] = useState("system");
 
@@ -90,6 +91,7 @@ function AdminDashboard() {
     setFormLevel("Beginner");
     setFormDuration("");
     setFormEmoji("💻");
+    setFormPrice("");
     setSyllabusItems([""]);
     setFormAddedBy("system");
     setIsEditMode(false);
@@ -107,6 +109,7 @@ function AdminDashboard() {
     setFormLevel(course.level);
     setFormDuration(course.duration);
     setFormEmoji(course.emoji || "💻");
+    setFormPrice(course.price ? String(course.price) : "");
     setSyllabusItems(course.syllabus && course.syllabus.length > 0 ? [...course.syllabus] : [""]);
     setFormAddedBy(course.addedBy || "system");
     setIsEditMode(true);
@@ -159,6 +162,7 @@ function AdminDashboard() {
       level: formLevel,
       duration: formDuration,
       emoji: formEmoji,
+      price: formPrice ? Number(formPrice) : undefined,
       syllabus: filteredSyllabus,
       addedBy: isEditMode ? formAddedBy : "system"
     };
@@ -217,6 +221,19 @@ function AdminDashboard() {
       setUsers(updatedUsers);
       localStorage.setItem("users", JSON.stringify(updatedUsers));
       alert("User successfully deleted.");
+    }
+  };
+
+  const handleResetPurchases = (email) => {
+    const key = `purchased_courses_${email}`;
+    const purchased = JSON.parse(localStorage.getItem(key) || "[]");
+    if (purchased.length === 0) {
+      alert(`No purchases found for ${email}.`);
+      return;
+    }
+    if (window.confirm(`Reset all purchased courses for "${email}"? They will lose video access.`)) {
+      localStorage.removeItem(key);
+      alert(`Purchases cleared for ${email}.`);
     }
   };
 
@@ -579,14 +596,23 @@ function AdminDashboard() {
                           )}
                         </td>
                         <td>
-                          <button 
-                            className="table-btn delete" 
-                            onClick={() => handleUserDelete(user.email)}
-                            disabled={currentUser.email.toLowerCase() === user.email.toLowerCase()}
-                            style={{ opacity: currentUser.email.toLowerCase() === user.email.toLowerCase() ? 0.3 : 1 }}
-                          >
-                            Delete User
-                          </button>
+                          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                            <button 
+                              className="table-btn delete" 
+                              onClick={() => handleUserDelete(user.email)}
+                              disabled={currentUser.email.toLowerCase() === user.email.toLowerCase()}
+                              style={{ opacity: currentUser.email.toLowerCase() === user.email.toLowerCase() ? 0.3 : 1 }}
+                            >
+                              Delete User
+                            </button>
+                            <button 
+                              className="table-btn reset" 
+                              onClick={() => handleResetPurchases(user.email)}
+                              style={{ opacity: 1 }}
+                            >
+                              Reset Purchases
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -646,6 +672,25 @@ function AdminDashboard() {
                     placeholder="e.g. 🧠"
                     required
                   />
+                </div>
+              </div>
+
+              <div className="form-group-row">
+                <div className="form-field">
+                  <label>Price (₹) — Leave empty for free</label>
+                  <input
+                    type="number"
+                    value={formPrice}
+                    onChange={(e) => setFormPrice(e.target.value)}
+                    placeholder="e.g. 1999"
+                    min="0"
+                  />
+                </div>
+                <div className="form-field">
+                  <label>&nbsp;</label>
+                  <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.82rem", marginTop: "8px" }}>
+                    💡 Set a price for video access. Free courses show "Enroll" only.
+                  </p>
                 </div>
               </div>
 
