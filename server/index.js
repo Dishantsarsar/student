@@ -67,7 +67,11 @@ app.post('/api/chat', async (req, res) => {
     res.json({ reply });
   } catch (err) {
     console.error('Groq API error:', err.message);
-    res.status(500).json({ error: 'Failed to get response' });
+    const detail = err.message || '';
+    const userMsg = detail.includes('image')
+      ? 'I can only answer text questions. Please type your question instead of sharing files or images.'
+      : 'Sorry, I encountered an error. Please try again.';
+    res.json({ reply: userMsg });
   }
 });
 
