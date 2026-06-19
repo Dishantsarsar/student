@@ -1,0 +1,45 @@
+/* Certificates Page Styles */
+
+/* Certificates: QR inline */
+.cert-qr-cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--admin-text-tertiary);
+  white-space: nowrap;
+}
+
+/* Certificates: modal body */
+.cert-modal-body {
+  text-align: center;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.cert-modal-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  background: var(--admin-gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 6px;
+}
+
+.cert-modal-id {
+  font-size: 20px;
+  color: var(--admin-text-primary);
+}
+
+.cert-modal-subtitle {
+  font-size: 14px;
+  color: var(--admin-text-secondary);
+  margin: 0;
+  margin-bottom: 8px;
+}

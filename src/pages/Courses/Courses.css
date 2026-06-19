@@ -339,6 +339,9 @@
   position: relative;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 242, 254, 0.15);
   animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes fadeIn {
@@ -366,6 +369,7 @@
   cursor: pointer;
   color: #fff;
   transition: all 0.2s ease;
+  z-index: 10;
 }
 
 .close-btn:hover {
@@ -378,6 +382,7 @@
   align-items: center;
   gap: 15px;
   margin-bottom: 25px;
+  flex-shrink: 0;
 }
 
 .modal-title h2 {
@@ -397,6 +402,24 @@
 
 .modal-body {
   margin-bottom: 30px;
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+/* Custom Scrollbar for Modal Body */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .modal-section {

@@ -1,0 +1,311 @@
+/* ============================================
+   SOLUTION ADDA — Form Styles
+   ============================================ */
+
+/* ── Input ── */
+.admin-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--admin-border-light);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-primary);
+  font-family: var(--admin-font-family);
+  font-size: var(--admin-font-small);
+  transition: all var(--admin-transition-fast);
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: var(--admin-border-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.admin-input::placeholder {
+  color: var(--admin-text-muted);
+}
+
+/* ── Textarea ── */
+.admin-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--admin-border-light);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-primary);
+  font-family: var(--admin-font-family);
+  font-size: var(--admin-font-small);
+  transition: all var(--admin-transition-fast);
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+.admin-textarea:focus {
+  border-color: var(--admin-border-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* ── Select ── */
+.admin-select {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--admin-border-light);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-primary);
+  font-family: var(--admin-font-family);
+  font-size: var(--admin-font-small);
+  transition: all var(--admin-transition-fast);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.admin-select:focus {
+  border-color: var(--admin-border-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.admin-select option {
+  background: var(--admin-bg-secondary);
+  color: var(--admin-text-primary);
+}
+
+/* ── Form Group ── */
+.admin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--admin-space-lg);
+}
+
+.admin-form-label {
+  font-size: var(--admin-font-small);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-text-secondary);
+}
+
+.admin-form-hint {
+  font-size: var(--admin-font-xs);
+  color: var(--admin-text-muted);
+}
+
+/* ── Toggle Switch ── */
+.admin-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  display: inline-block;
+}
+
+.admin-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.admin-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--admin-bg-elevated);
+  border: 1px solid var(--admin-border-light);
+  border-radius: var(--admin-radius-full);
+  transition: all var(--admin-transition-normal);
+}
+
+.admin-toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: var(--admin-text-secondary);
+  border-radius: 50%;
+  transition: all var(--admin-transition-normal);
+}
+
+.admin-toggle input:checked + .admin-toggle-slider {
+  background: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+.admin-toggle input:checked + .admin-toggle-slider::before {
+  transform: translateX(20px);
+  background: white;
+}
+
+/* ── File Upload ── */
+.admin-file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--admin-space-xl);
+  border: 2px dashed var(--admin-border-light);
+  border-radius: var(--admin-radius-lg);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: all var(--admin-transition-normal);
+  text-align: center;
+  gap: var(--admin-space-sm);
+}
+
+.admin-file-upload:hover {
+  border-color: var(--admin-primary);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.admin-file-upload-icon {
+  color: var(--admin-text-tertiary);
+}
+
+.admin-file-upload-text {
+  font-size: var(--admin-font-small);
+  color: var(--admin-text-tertiary);
+}
+
+.admin-file-upload-text span {
+  color: var(--admin-primary-light);
+  font-weight: var(--admin-font-weight-medium);
+}
+
+/* ── Form Row ── */
+.admin-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--admin-space-lg);
+}
+
+/* ── Search Input with Icon ── */
+.admin-search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.admin-search-wrapper .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--admin-text-muted);
+  pointer-events: none;
+}
+
+.admin-search-wrapper .admin-input {
+  padding-left: 38px;
+}
+
+/* ── Modal Helper Styles ── */
+.modal-student-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.modal-student-header h3 {
+  font-size: 17px;
+  color: var(--admin-text-primary);
+  margin-bottom: 2px;
+}
+
+.modal-student-header p {
+  font-size: 13px;
+  color: var(--admin-text-tertiary);
+  margin: 0;
+}
+
+.modal-avatar {
+  width: 48px !important;
+  height: 48px !important;
+  font-size: 16px !important;
+  flex-shrink: 0;
+}
+
+.modal-field-value {
+  font-size: 14px;
+  color: var(--admin-text-primary);
+  margin: 0;
+  padding: 8px 0;
+}
+
+.modal-confirm-text {
+  font-size: 14px;
+  color: var(--admin-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.modal-confirm-text strong {
+  color: var(--admin-text-primary);
+}
+
+/* ── Inline-row form group (for toggle switches) ── */
+.admin-form-group--inline {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-form-group--inline .admin-form-label {
+  margin: 0;
+}
+
+/* ── Last-login info box ── */
+.profile-info-box {
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--admin-radius-md);
+  border: 1px solid var(--admin-border);
+  font-size: 13px;
+  color: var(--admin-text-secondary);
+  margin-top: 12px;
+}
+
+.profile-info-box strong {
+  color: var(--admin-text-primary);
+}
+
+/* ── QR/Cert detail block ── */
+.cert-detail-block {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.cert-detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.cert-detail-label {
+  font-size: 12px;
+  color: var(--admin-text-tertiary);
+}
+
+.cert-detail-value {
+  font-size: 14px;
+  color: var(--admin-text-primary);
+  font-weight: 500;
+}
+

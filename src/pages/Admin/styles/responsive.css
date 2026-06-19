@@ -1,0 +1,200 @@
+/* ============================================
+   SOLUTION ADDA — Responsive Styles
+   ============================================ */
+
+/* ── Tablet (1024px and below) ── */
+@media (max-width: 1024px) {
+  :root {
+    --admin-content-padding: 24px;
+  }
+
+  .admin-page-content {
+    padding: var(--admin-content-padding);
+  }
+
+  .admin-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--admin-space-md);
+  }
+
+  .admin-grid-sm {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  /* Sidebar overlay on tablet */
+  .admin-sidebar {
+    position: fixed;
+    left: -280px !important;
+    z-index: var(--admin-z-sidebar);
+    transition: left var(--admin-transition-normal);
+  }
+
+  .admin-sidebar.open {
+    left: 0 !important;
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .admin-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
+}
+
+/* ── Mobile (768px and below) ── */
+@media (max-width: 768px) {
+  :root {
+    --admin-content-padding: 16px;
+    --admin-navbar-height: 60px;
+  }
+
+  .admin-page-content {
+    padding: var(--admin-content-padding);
+  }
+
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-grid-sm {
+    grid-template-columns: 1fr;
+  }
+
+  /* Tables scroll horizontally */
+  .admin-table-wrapper {
+    border-radius: var(--admin-radius-md);
+  }
+
+  .admin-table td,
+  .admin-table th {
+    padding: 10px 14px;
+  }
+
+  /* Toolbar stacks */
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--admin-space-sm);
+  }
+
+  .table-toolbar-left {
+    width: 100%;
+  }
+
+  .table-toolbar-right {
+    justify-content: flex-end;
+  }
+
+  .admin-search-wrapper {
+    max-width: 100%;
+  }
+
+  /* Form rows stack */
+  .admin-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Section headers */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--admin-space-md);
+  }
+
+  .section-header-actions {
+    width: 100%;
+  }
+
+  .section-header-actions .admin-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* Stat card value */
+  .stat-card-value {
+    font-size: 26px;
+  }
+
+  /* Chart heights */
+  .chart-bars {
+    height: 160px;
+  }
+
+  /* Navbar adjustments */
+  .navbar-search {
+    display: none;
+  }
+
+  .navbar-breadcrumb {
+    display: none;
+  }
+
+  /* Cards */
+  .admin-card {
+    padding: var(--admin-space-md);
+  }
+
+  /* Buttons */
+  .admin-btn-group {
+    flex-wrap: wrap;
+  }
+
+  /* Table footer */
+  .table-footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Quick actions grid */
+  .quick-actions-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Small Mobile (480px and below) ── */
+@media (max-width: 480px) {
+  :root {
+    --admin-content-padding: 12px;
+  }
+
+  .admin-page-content h1 {
+    font-size: 24px;
+  }
+
+  .stat-card {
+    padding: var(--admin-space-md);
+  }
+
+  .stat-card-value {
+    font-size: 22px;
+  }
+
+  .admin-btn {
+    padding: 8px 16px;
+    font-size: var(--admin-font-xs);
+  }
+
+  .admin-table td,
+  .admin-table th {
+    padding: 8px 12px;
+    font-size: var(--admin-font-xs);
+  }
+}
+
+/* ── Large Desktop (1920px+) ── */
+@media (min-width: 1920px) {
+  .admin-grid {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  }
+
+  .stat-card-value {
+    font-size: 36px;
+  }
+}

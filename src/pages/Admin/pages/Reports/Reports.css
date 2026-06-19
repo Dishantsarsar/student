@@ -1,0 +1,72 @@
+/* Reports Page Styles */
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.report-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.report-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.report-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+  margin-bottom: 2px;
+}
+
+.report-card-desc {
+  font-size: 13px;
+  color: var(--admin-text-tertiary);
+  margin: 0;
+}
+
+.report-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.report-stat-item {
+  flex: 1;
+  min-width: 65px;
+}
+
+.report-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--admin-text-primary);
+  line-height: 1.2;
+}
+
+.report-stat-label {
+  font-size: 11px;
+  color: var(--admin-text-muted);
+  text-transform: capitalize;
+  margin-top: 2px;
+}
+
+.report-export-row {
+  display: flex;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--admin-border);
+  flex-wrap: wrap;
+}
+
+.report-export-row .admin-btn {
+  flex: 1;
+  min-width: 60px;
+}

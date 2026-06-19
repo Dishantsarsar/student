@@ -1,0 +1,95 @@
+.custom-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(3, 2, 10, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11000;
+  animation: authFadeIn 0.25s ease forwards;
+}
+
+.custom-dialog-content {
+  background: linear-gradient(180deg, #181a28 0%, #10121d 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 32px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: authScaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+}
+
+.custom-dialog-content:focus {
+  outline: none;
+}
+
+.custom-dialog-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.custom-dialog-content h2 {
+  color: #fff;
+  font-size: 20px;
+  margin: 0 0 12px 0;
+}
+
+.custom-dialog-content p {
+  color: #a1a1aa;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.custom-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.dialog-btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.dialog-cancel {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dialog-cancel:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dialog-confirm {
+  background: #f43f5e;
+  color: white;
+}
+
+.dialog-confirm:hover {
+  background: #e11d48;
+}
+
+.dialog-success, .dialog-alert {
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  color: #05030f;
+}
+
+.dialog-success:hover, .dialog-alert:hover {
+  background: linear-gradient(135deg, #4facfe, #fc00ff);
+  color: white;
+}

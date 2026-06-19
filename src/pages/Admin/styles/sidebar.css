@@ -1,0 +1,619 @@
+/* ============================================================
+   SOLUTION ADDA — Premium Sidebar Styles
+   Dark Glassmorphism · 8px Grid · Linear/Stripe/Vercel Quality
+   ============================================================ */
+
+/* ── CSS Variables (sidebar-specific overrides) ── */
+:root {
+  --sb-width:         260px;
+  --sb-collapsed:     72px;
+  --sb-transition:    280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --sb-fast:          160ms ease;
+
+  --sb-bg-1:          #08111F;
+  --sb-bg-2:          #0B1328;
+  --sb-bg-3:          #0E1838;
+
+  --sb-purple:        #7A5CFF;
+  --sb-purple-dim:    rgba(122, 92, 255, 0.15);
+  --sb-purple-glow:   rgba(122, 92, 255, 0.25);
+  --sb-purple-active: rgba(122, 92, 255, 0.18);
+  --sb-purple-hover:  rgba(122, 92, 255, 0.08);
+
+  --sb-text-primary:  #F1F5F9;
+  --sb-text-secondary:#94A3B8;
+  --sb-text-muted:    rgba(241,245,249, 0.45);
+
+  --sb-border:        rgba(255, 255, 255, 0.06);
+  --sb-border-light:  rgba(255, 255, 255, 0.10);
+
+  --sb-glass-bg:      rgba(15, 25, 50, 0.60);
+  --sb-glass-border:  rgba(255, 255, 255, 0.07);
+
+  --sb-radius-sm:     8px;
+  --sb-radius-md:     14px;
+  --sb-radius-lg:     16px;
+  --sb-radius-full:   9999px;
+
+  --sb-item-height:   48px;
+}
+
+/* ============================================================
+   Sidebar Root
+   ============================================================ */
+.sb-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sb-width);
+  height: 100vh;
+  z-index: 100;
+
+  /* Background: deep dark with radial purple glow at top-left */
+  background:
+    radial-gradient(circle at top left, rgba(122, 92, 255, 0.15), transparent 50%),
+    linear-gradient(180deg, #08111F 0%, #0B1328 40%, #0E1838 100%);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  /* Border: soft, not harsh */
+  border-right: 1px solid var(--sb-border);
+
+  /* Smooth collapse */
+  transition: width var(--sb-transition);
+
+  /* GPU acceleration */
+  will-change: width;
+  transform: translateZ(0);
+}
+
+/* ── Collapsed state ── */
+.sb-root--collapsed {
+  width: var(--sb-collapsed);
+}
+
+/* ── Mobile: hidden off-screen by default ── */
+@media (max-width: 1024px) {
+  .sb-root {
+    left: calc(-1 * var(--sb-width));
+    transition: left var(--sb-transition), width var(--sb-transition);
+    box-shadow: none;
+  }
+
+  .sb-root--open {
+    left: 0;
+    box-shadow: 8px 0 40px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ============================================================
+   Mobile Overlay
+   ============================================================ */
+.sb-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--sb-transition);
+}
+
+@media (max-width: 1024px) {
+  .sb-overlay {
+    display: block;
+  }
+  .sb-overlay--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ============================================================
+   Logo Section
+   ============================================================ */
+.sb-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--sb-border);
+  min-height: 80px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Logo icon: glass pill with purple glow */
+.sb-logo__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--sb-radius-md);
+  background: linear-gradient(135deg, rgba(122, 92, 255, 0.8), rgba(99, 102, 241, 0.9));
+  box-shadow:
+    0 0 20px rgba(122, 92, 255, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(122, 92, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  transition: box-shadow var(--sb-fast), transform var(--sb-fast);
+}
+
+.sb-logo:hover .sb-logo__icon {
+  box-shadow:
+    0 0 28px rgba(122, 92, 255, 0.55),
+    0 6px 16px rgba(0, 0, 0, 0.4);
+  transform: scale(1.04);
+}
+
+/* Text block fades out on collapse */
+.sb-logo__text {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity var(--sb-fast), width var(--sb-fast);
+  opacity: 1;
+}
+
+.sb-root--collapsed .sb-logo__text {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+}
+
+.sb-logo__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--sb-text-primary);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.sb-logo__sub {
+  font-size: 11px;
+  color: var(--sb-text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Mobile close button — only visible on mobile */
+.sb-mobile-close {
+  display: none;
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--sb-text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--sb-radius-sm);
+  transition: color var(--sb-fast), background var(--sb-fast);
+  flex-shrink: 0;
+}
+
+.sb-mobile-close:hover {
+  color: var(--sb-text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 1024px) {
+  .sb-mobile-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+.sb-nav {
+  flex: 1;
+  padding: 20px 12px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  /* Thin custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.sb-nav:hover {
+  scrollbar-color: rgba(122, 92, 255, 0.3) transparent;
+}
+
+.sb-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sb-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sb-nav::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: var(--sb-radius-full);
+  transition: background var(--sb-fast);
+}
+
+.sb-nav:hover::-webkit-scrollbar-thumb {
+  background: rgba(122, 92, 255, 0.3);
+}
+
+/* ── Section ── */
+.sb-section {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sb-section:first-child {
+  margin-top: 0;
+}
+
+/* Section label */
+.sb-section__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sb-text-muted);
+  padding: 0 8px;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  transition: opacity var(--sb-fast), height var(--sb-fast);
+}
+
+.sb-root--collapsed .sb-section__label {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ── Menu Item Base ── */
+.sb-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: var(--sb-item-height);
+  padding: 0 16px;
+  border-radius: var(--sb-radius-md);
+  color: rgba(148, 163, 184, 0.85);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  will-change: transform, background;
+
+  /* Prevent text shift */
+  transition:
+    color 250ms ease,
+    background 250ms ease,
+    transform 250ms ease,
+    box-shadow 250ms ease;
+
+  /* Reset button styles (when used as button) */
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  outline: none;
+}
+
+/* Focus ring for keyboard navigation */
+.sb-item:focus-visible {
+  outline: 2px solid rgba(122, 92, 255, 0.7);
+  outline-offset: 2px;
+}
+
+/* Hover state */
+.sb-item:hover {
+  color: var(--sb-text-primary);
+  background: var(--sb-purple-hover);
+  transform: translateX(4px);
+}
+
+/* Active click micro-feedback */
+.sb-item:active {
+  transform: translateX(4px) scale(0.98);
+}
+
+/* ── Active Item ── */
+.sb-item--active {
+  color: #fff;
+  background: var(--sb-purple-active);
+  box-shadow:
+    0 0 18px var(--sb-purple-glow),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.01);
+}
+
+.sb-item--active:hover {
+  transform: scale(1.01) translateX(2px);
+}
+
+/* 4px glowing left indicator bar */
+.sb-item--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  border-radius: 0 4px 4px 0;
+  background: var(--sb-purple);
+  box-shadow: 0 0 10px var(--sb-purple), 0 0 4px rgba(122, 92, 255, 0.6);
+}
+
+/* ── Item icon ── */
+.sb-item__icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 250ms ease;
+  color: inherit;
+}
+
+.sb-item--active .sb-item__icon {
+  color: var(--sb-purple);
+}
+
+/* ── Item label text ── */
+.sb-item__label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity var(--sb-fast), width var(--sb-fast);
+  opacity: 1;
+}
+
+.sb-root--collapsed .sb-item__label {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Badge
+   ============================================================ */
+.sb-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--sb-radius-full);
+  background: rgba(122, 92, 255, 0.22);
+  color: #c4b5fd;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(122, 92, 255, 0.3);
+  flex-shrink: 0;
+  transition: opacity var(--sb-fast);
+}
+
+.sb-root--collapsed .sb-badge {
+  display: none;
+}
+
+/* ============================================================
+   Tooltip (visible only when collapsed)
+   ============================================================ */
+.sb-tooltip-wrapper {
+  position: relative;
+  display: block;
+}
+
+.sb-tooltip {
+  position: absolute;
+  left: calc(var(--sb-collapsed) - 4px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(15, 25, 50, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--sb-border-light);
+  color: var(--sb-text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--sb-radius-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease, transform 150ms ease;
+  transform: translateY(-50%) translateX(-8px);
+  z-index: 200;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Only show tooltips when sidebar is collapsed */
+.sb-root--collapsed .sb-tooltip-wrapper:hover .sb-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0px);
+}
+
+/* ============================================================
+   Profile Footer
+   ============================================================ */
+.sb-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px;
+  margin: 8px 12px 12px;
+  border-radius: var(--sb-radius-md);
+  background: var(--sb-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--sb-glass-border);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: transform var(--sb-fast), box-shadow var(--sb-fast), border-color var(--sb-fast);
+  cursor: default;
+}
+
+.sb-profile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Avatar circle */
+.sb-profile__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7A5CFF, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(122, 92, 255, 0.3);
+}
+
+/* Profile info text */
+.sb-profile__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity var(--sb-fast), width var(--sb-fast);
+  opacity: 1;
+  min-width: 0;
+}
+
+.sb-root--collapsed .sb-profile__info {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+}
+
+.sb-profile__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sb-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.sb-profile__email {
+  font-size: 11px;
+  color: var(--sb-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+/* Logout button inside profile card */
+.sb-profile__logout {
+  background: transparent;
+  border: none;
+  color: rgba(148, 163, 184, 0.6);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--sb-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color var(--sb-fast), background var(--sb-fast);
+}
+
+.sb-profile__logout:hover {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.sb-profile__logout:focus-visible {
+  outline: 2px solid rgba(239, 68, 68, 0.5);
+  outline-offset: 2px;
+}
+
+/* Collapsed profile: center avatar, hide text */
+.sb-root--collapsed .sb-profile {
+  justify-content: center;
+  padding: 12px 8px;
+}
+
+.sb-root--collapsed .sb-profile__logout {
+  display: none;
+}
+
+/* ============================================================
+   Collapse Toggle Button (desktop only)
+   ============================================================ */
+.sb-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--sb-border);
+  color: var(--sb-text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color var(--sb-fast), background var(--sb-fast);
+}
+
+.sb-toggle:hover {
+  color: var(--sb-text-primary);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sb-toggle:focus-visible {
+  outline: 2px solid rgba(122, 92, 255, 0.5);
+  outline-offset: -2px;
+}
+
+/* Hide collapse toggle on mobile */
+@media (max-width: 1024px) {
+  .sb-toggle {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Responsive: Tablet — always show sidebar as slide-over
+   ============================================================ */
+@media (max-width: 1024px) {
+  .sb-root {
+    width: var(--sb-width) !important; /* Never collapse to icon-only on mobile */
+  }
+}

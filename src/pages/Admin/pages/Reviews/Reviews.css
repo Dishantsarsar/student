@@ -1,0 +1,97 @@
+/* Reviews Page Styles */
+
+.reviews-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 1.25rem;
+}
+
+.review-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 1.25rem;
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.review-card-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-avatar {
+  width: 34px !important;
+  height: 34px !important;
+  font-size: 11px !important;
+  flex-shrink: 0;
+}
+
+.review-author-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+}
+
+.review-author-course {
+  font-size: 12px;
+  color: var(--admin-text-tertiary);
+  margin-top: 1px;
+}
+
+.review-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.review-comment {
+  font-size: 13px;
+  color: var(--admin-text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  flex: 1;
+}
+
+.review-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--admin-border);
+  margin-top: auto;
+}
+
+.review-date {
+  font-size: 12px;
+  color: var(--admin-text-muted);
+}
+
+.reviews-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}

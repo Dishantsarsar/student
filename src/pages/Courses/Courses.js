@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./Courses.css";
-import { coursesData } from "./coursesData";
+import { coursesData } from "../../coursesData";
+import AuthActionModal from "../../components/AuthModal/AuthActionModal";
+import CustomDialog from "../../components/CustomDialog/CustomDialog";
+import RecommendedCourses from "../../components/Engagement/RecommendedCourses";
+import LockedAchievements from "../../components/Engagement/LockedAchievements";
 
 function Courses() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAuthActionModal, setShowAuthActionModal] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState('active');
+  const [dialogConfig, setDialogConfig] = useState({ isOpen: false });
+  const isAuth = !!localStorage.getItem('sa_user');
   const [selectedLevel, setSelectedLevel] = useState("All");
   const [favorites, setFavorites] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
@@ -12,6 +20,26 @@ function Courses() {
   const [activeCourse, setActiveCourse] = useState(null);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [showOnlyEnrolled, setShowOnlyEnrolled] = useState(false);
+
+  const [hoveredCourse, setHoveredCourse] = useState(null);
+  const hoverTimerRef = useRef(null);
+
+  // For hover/click on course cards (now just for hover preview)
+  const handleCardMouseEnter = (course) => {
+    hoverTimerRef.current = setTimeout(() => {
+      setHoveredCourse(course.title);
+      // Trigger passive prompt if not authenticated
+      if (!isAuth && !sessionStorage.getItem('passive_auth_dismissed') && !showAuthActionModal) {
+        setAuthModalMode('passive');
+        setShowAuthActionModal(true);
+      }
+    }, 2000);
+  };
+
+  const handleCardMouseLeave = () => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    setHoveredCourse(null);
+  };
 
   // Load preferences from localstorage on mount
   useEffect(() => {
@@ -35,9 +63,65 @@ function Courses() {
     }
   }, []);
 
+  const triggerPassiveAuthPrompt = useCallback(() => {
+    if (isAuth) return;
+    const dismissed = sessionStorage.getItem('passive_auth_dismissed');
+    if (!dismissed && !showAuthActionModal) {
+      setAuthModalMode('passive');
+      setShowAuthActionModal(true);
+    }
+  }, [isAuth, showAuthActionModal]);
+
+  // Passive Browsing Logic
+  useEffect(() => {
+    if (isAuth) return;
+
+    // Time tracking: 8 seconds
+    const timeTimer = setTimeout(() => {
+      triggerPassiveAuthPrompt();
+    }, 8000);
+
+    // Scroll tracking
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          if (docHeight > 0) {
+            const scrollPercent = (scrolled / docHeight) * 100;
+            if (scrollPercent > 35) {
+              triggerPassiveAuthPrompt();
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(timeTimer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isAuth, triggerPassiveAuthPrompt]);
+
   // Sync favorites
   const toggleFavorite = (courseTitle, e) => {
     e.stopPropagation();
+    if (!isAuth) {
+      setAuthModalMode('active');
+      setShowAuthActionModal(true);
+      return;
+    }
+    
+    // Micro-animation
+    const btn = e.currentTarget;
+    btn.classList.add('heart-burst');
+    setTimeout(() => btn.classList.remove('heart-burst'), 500);
+
     let updatedFavorites;
     if (favorites.includes(courseTitle)) {
       updatedFavorites = favorites.filter((title) => title !== courseTitle);
@@ -50,27 +134,47 @@ function Courses() {
 
   // Toggle enrollment
   const toggleEnroll = (courseTitle) => {
-    let updatedEnrolled;
-    if (enrolled.includes(courseTitle)) {
-      if (window.confirm(`Are you sure you want to leave ${courseTitle}? Your progress will be reset.`)) {
-        updatedEnrolled = enrolled.filter((title) => title !== courseTitle);
-        // Clear progress for this course
-        const updatedProgress = { ...completedSyllabusItems };
-        Object.keys(updatedProgress).forEach((key) => {
-          if (key.startsWith(`${courseTitle}-`)) {
-            delete updatedProgress[key];
-          }
-        });
-        setCompletedSyllabusItems(updatedProgress);
-        localStorage.setItem("syllabus_progress", JSON.stringify(updatedProgress));
-      } else {
-        return;
-      }
-    } else {
-      updatedEnrolled = [...enrolled, courseTitle];
+    if (!isAuth) {
+      setAuthModalMode('active');
+      setShowAuthActionModal(true);
+      return;
     }
-    setEnrolled(updatedEnrolled);
-    localStorage.setItem("enrolled_courses", JSON.stringify(updatedEnrolled));
+
+    if (enrolled.includes(courseTitle)) {
+      setDialogConfig({
+        isOpen: true,
+        title: 'Leave Course',
+        message: `Are you sure you want to leave ${courseTitle}? Your progress will be reset.`,
+        type: 'confirm',
+        confirmText: 'Leave Course',
+        onConfirm: () => {
+          const updatedEnrolled = enrolled.filter((title) => title !== courseTitle);
+          // Clear progress for this course
+          const updatedProgress = { ...completedSyllabusItems };
+          Object.keys(updatedProgress).forEach((key) => {
+            if (key.startsWith(`${courseTitle}-`)) {
+              delete updatedProgress[key];
+            }
+          });
+          setCompletedSyllabusItems(updatedProgress);
+          localStorage.setItem("syllabus_progress", JSON.stringify(updatedProgress));
+          setEnrolled(updatedEnrolled);
+          localStorage.setItem("enrolled_courses", JSON.stringify(updatedEnrolled));
+        }
+      });
+    } else {
+      const updatedEnrolled = [...enrolled, courseTitle];
+      setEnrolled(updatedEnrolled);
+      localStorage.setItem("enrolled_courses", JSON.stringify(updatedEnrolled));
+      
+      setDialogConfig({
+        isOpen: true,
+        title: 'Enrollment Successful',
+        message: `Successfully enrolled in ${courseTitle}! Happy learning!`,
+        type: 'success',
+        confirmText: 'Continue'
+      });
+    }
   };
 
   // Toggle syllabus checklist item
@@ -235,9 +339,14 @@ function Courses() {
 
             return (
               <div
-                className={`course-card ${isEnrolled ? "enrolled" : ""}`}
+                className={`course-card ${isEnrolled ? "enrolled" : ""} interactive`}
                 key={index}
-                onClick={() => setActiveCourse(course)}
+                onMouseEnter={() => handleCardMouseEnter(course)}
+                onMouseLeave={handleCardMouseLeave}
+                onClick={() => {
+                  triggerPassiveAuthPrompt();
+                  setActiveCourse(course);
+                }}
               >
                 <div className="card-top">
                   <div className="course-icon-badge-row">
@@ -268,6 +377,28 @@ function Courses() {
                   <h3>{course.title}</h3>
                   <p className="course-desc">{course.description}</p>
                 </div>
+
+                {/* 2-Second Hover Preview Overlay */}
+                {hoveredCourse === course.title && (
+                  <div className="course-preview-overlay fade-in">
+                    <div className="mock-video-container">
+                      <div className="mock-video-bg"></div>
+                      <div className="mock-video-controls">
+                        <span className="play-icon">▶</span>
+                        <span className="mute-icon">🔇</span>
+                        <span className="live-badge">PREVIEW</span>
+                      </div>
+                    </div>
+                    <div className="preview-meta">
+                      <p><strong>Instructor:</strong> {course.instructor || "John Doe"}</p>
+                      <p><strong>Students:</strong> 12,450+</p>
+                      <p><strong>Skills:</strong> HTML, CSS, React, JS</p>
+                      <div className="preview-stats">
+                        <span>{course.duration}</span> • <span>{course.level}</span> • <span>⭐ {course.rating || "4.8"}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Progress Bar inside Card if Enrolled */}
                 {isEnrolled && (
@@ -390,7 +521,14 @@ function Courses() {
                           className={`syllabus-item-interactive ${
                             isCompleted ? "completed" : ""
                           } ${!isEnrolled ? "disabled" : ""}`}
-                          onClick={() => isEnrolled && toggleSyllabusItem(activeCourse.title, idx)}
+                          onClick={() => {
+                            if (!isAuth) {
+                              setAuthModalMode('active');
+                              setShowAuthActionModal(true);
+                              return;
+                            }
+                            if (isEnrolled) toggleSyllabusItem(activeCourse.title, idx);
+                          }}
                         >
                           {isEnrolled ? (
                             <div className="custom-checkbox-wrapper">
@@ -428,8 +566,12 @@ function Courses() {
                   <button
                     className="enroll-btn"
                     onClick={() => {
+                      if (!isAuth) {
+                        setAuthModalMode('active');
+                        setShowAuthActionModal(true);
+                        return;
+                      }
                       toggleEnroll(activeCourse.title);
-                      alert(`Successfully Enrolled in ${activeCourse.title}! Happy learning!`);
                     }}
                   >
                     Enroll in Course
@@ -440,6 +582,31 @@ function Courses() {
           </div>
         );
       })()}
+
+      {/* Engagement Widgets */}
+      <RecommendedCourses 
+        onCourseClick={(course) => setActiveCourse(course)}
+      />
+      <LockedAchievements 
+        onAchievementClick={() => {
+          if (!isAuth) {
+            setAuthModalMode('active');
+            setShowAuthActionModal(true);
+          }
+        }}
+      />
+
+      {/* Modals */}
+      <AuthActionModal 
+        isOpen={showAuthActionModal}
+        mode={authModalMode}
+        onClose={() => setShowAuthActionModal(false)}
+      />
+
+      <CustomDialog
+        {...dialogConfig}
+        onClose={() => setDialogConfig(prev => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }

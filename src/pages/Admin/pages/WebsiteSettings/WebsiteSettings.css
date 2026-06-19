@@ -1,0 +1,47 @@
+/* WebsiteSettings Page Styles */
+
+.settings-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.settings-card {
+  max-width: 840px;
+}
+
+.settings-section-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+  margin-bottom: 20px;
+}
+
+.settings-section-title--icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon in label */
+.settings-label-icon {
+  vertical-align: middle;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* Short textarea height */
+.settings-textarea-sm {
+  min-height: 60px !important;
+}
+
+/* Toggles column */
+.settings-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}

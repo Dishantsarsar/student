@@ -1,0 +1,291 @@
+/* ============================================
+   SOLUTION ADDA — Table Styles (Enterprise Edition)
+   ============================================ */
+
+/* ── Table Wrapper ── */
+.admin-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--admin-radius-lg);
+  background: var(--admin-glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--admin-glass-border);
+  /* Thin custom scrollbar on overflow */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.25) transparent;
+}
+
+.admin-table-wrapper::-webkit-scrollbar {
+  height: 4px;
+}
+
+.admin-table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.25);
+  border-radius: var(--admin-radius-full);
+}
+
+/* ── Table ── */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--admin-font-small);
+  table-layout: auto;
+}
+
+/* ── Sticky Header ── */
+.admin-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-table thead tr {
+  background: rgba(10, 14, 26, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--admin-border-light);
+}
+
+.admin-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+
+.admin-table th.sortable {
+  cursor: pointer;
+  transition: color var(--admin-transition-fast);
+}
+
+.admin-table th.sortable:hover {
+  color: var(--admin-text-secondary);
+}
+
+/* ── Body Rows ── */
+.admin-table tbody tr {
+  border-bottom: 1px solid var(--admin-border);
+  transition: background var(--admin-transition-fast);
+  position: relative;
+}
+
+.admin-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.04);
+}
+
+/* ── Hover-only actions: hidden by default, visible on row hover ── */
+.admin-table tbody tr .table-actions {
+  opacity: var(--admin-table-action-opacity, 0);
+  transition: opacity var(--admin-transition-fast);
+}
+
+.admin-table tbody tr:hover .table-actions {
+  opacity: 1;
+}
+
+/* ── Table Cells ── */
+.admin-table td {
+  padding: 12px 16px;
+  color: var(--admin-text-secondary);
+  white-space: nowrap;
+  vertical-align: middle;
+  max-width: 0; /* enables truncation with table-layout:fixed */
+}
+
+/* First cell: primary emphasis */
+.admin-table td:first-child {
+  color: var(--admin-text-primary);
+  font-weight: var(--admin-font-weight-medium);
+}
+
+/* Fixed-width action column */
+.admin-table th.col-actions,
+.admin-table td.col-actions {
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* ── Text truncation cell ── */
+.admin-table td.cell-truncate {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── User Cell ── */
+.table-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.table-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--admin-radius-full);
+  background: var(--admin-gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: var(--admin-font-weight-semibold);
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+
+.table-user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.table-user-name {
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-text-primary);
+  font-size: var(--admin-font-small);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-user-email {
+  font-size: 12px;
+  color: var(--admin-text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Action Buttons ── */
+.table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.table-action-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  background: transparent;
+  color: var(--admin-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+  flex-shrink: 0;
+}
+
+.table-action-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--admin-text-primary);
+  border-color: var(--admin-border-light);
+}
+
+.table-action-btn.danger:hover {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.table-action-btn.success:hover {
+  background: var(--admin-success-bg);
+  color: var(--admin-success);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+/* ── Toolbar ── */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--admin-space-md) var(--admin-space-lg);
+  border-bottom: 1px solid var(--admin-border);
+  gap: var(--admin-space-md);
+  flex-wrap: wrap;
+}
+
+.table-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  flex: 1;
+  min-width: 0;
+}
+
+.table-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-sm);
+  flex-shrink: 0;
+}
+
+/* ── Footer ── */
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px var(--admin-space-lg);
+  border-top: 1px solid var(--admin-border);
+  flex-wrap: wrap;
+  gap: var(--admin-space-md);
+}
+
+.table-footer-info {
+  font-size: var(--admin-font-small);
+  color: var(--admin-text-tertiary);
+  white-space: nowrap;
+}
+
+/* ── Monospace ID cell ── */
+.table-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 13px;
+  letter-spacing: -0.3px;
+}
+
+/* ── Responsive adjustments ── */
+@media (max-width: 768px) {
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--admin-space-sm);
+  }
+
+  .table-toolbar-left {
+    width: 100%;
+  }
+
+  .table-footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

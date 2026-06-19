@@ -1,0 +1,284 @@
+/* ============================================
+   SOLUTION ADDA — Premium Profile Dropdown CSS
+   ============================================ */
+
+/* ── Trigger: User Chip ── */
+.premium-user-chip {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  min-width: 220px;
+  border-radius: 16px;
+  padding: 0 16px;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.premium-user-chip:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.premium-user-chip:active {
+  transform: scale(0.98);
+}
+
+.premium-user-chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+.premium-user-chip .chevron-icon {
+  margin-left: auto;
+  color: var(--admin-text-tertiary);
+  transition: transform 200ms ease;
+}
+
+.premium-user-chip[aria-expanded="true"] .chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* ── Avatar ── */
+.premium-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.premium-avatar {
+  border-radius: 50%;
+  background: var(--admin-gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.premium-avatar-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--admin-success);
+  border: 2px solid var(--admin-bg-primary);
+}
+
+/* ── User Info (Chip) ── */
+.premium-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.premium-user-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+  line-height: 1.2;
+}
+
+.premium-user-role {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--admin-text-primary);
+  opacity: 0.6;
+}
+
+/* ── Dropdown Container ── */
+.premium-profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 300px;
+  min-width: 280px;
+  max-width: 340px;
+  background: linear-gradient(180deg, rgba(12, 18, 34, 0.98), rgba(8, 13, 25, 0.98));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25), 0 24px 64px rgba(0, 0, 0, 0.35);
+  z-index: var(--admin-z-dropdown);
+  padding: 20px;
+  
+  /* Entrance Animation */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top right;
+  transition: opacity 200ms ease-out, transform 200ms ease-out, visibility 200ms ease-out;
+}
+
+.navbar-profile.open .premium-profile-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Dropdown Header (User Card) ── */
+.dropdown-user-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 24px;
+}
+
+.dropdown-user-header .premium-avatar-wrapper {
+  margin-bottom: 16px;
+}
+
+.dropdown-user-header .premium-user-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.dropdown-user-header .premium-user-role {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  opacity: 0.65;
+  margin-bottom: 6px;
+}
+
+.dropdown-user-header .dropdown-user-email {
+  font-size: 13px;
+  font-weight: 400;
+  color: #ffffff;
+  opacity: 0.50;
+}
+
+/* ── Divider ── */
+.premium-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 16px 0;
+}
+
+/* ── Menu Item ── */
+.premium-menu-item {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border-radius: 12px;
+  padding: 0 16px;
+  gap: 12px;
+  color: var(--admin-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+.premium-menu-icon {
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color 200ms ease;
+}
+
+.premium-menu-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.premium-menu-item:hover .premium-menu-icon {
+  color: var(--admin-primary);
+}
+
+.premium-menu-item:hover .premium-menu-text {
+  transform: translateX(3px);
+  color: #ffffff;
+}
+
+.premium-menu-text {
+  transition: transform 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+.premium-menu-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3) inset;
+}
+
+/* ── Logout Button ── */
+.premium-menu-item.logout-btn {
+  /* Extra top spacing is handled by the divider above it, but we can ensure it stands out */
+  margin-top: 8px;
+}
+
+.premium-menu-item.logout-btn .premium-menu-text,
+.premium-menu-item.logout-btn .premium-menu-icon {
+  color: var(--admin-danger-light);
+}
+
+.premium-menu-item.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.08); /* Soft red tint */
+  color: var(--admin-danger-light);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.1);
+}
+
+.premium-menu-item.logout-btn:hover .premium-menu-icon {
+  transform: scale(1.1);
+  color: var(--admin-danger-light);
+}
+
+.premium-menu-item.logout-btn:hover .premium-menu-text {
+  color: var(--admin-danger-light);
+}
+
+/* ── Responsive Behavior ── */
+@media (max-width: 1024px) {
+  .premium-profile-dropdown {
+    width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-user-chip {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+    min-width: unset;
+  }
+
+  .premium-user-chip .premium-user-info,
+  .premium-user-chip .chevron-icon {
+    display: none;
+  }
+
+  .premium-profile-dropdown {
+    position: fixed;
+    top: auto;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) scale(0.98);
+    width: calc(100vw - 48px);
+    max-width: 400px;
+    transform-origin: bottom center;
+  }
+  
+  .navbar-profile.open .premium-profile-dropdown {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
