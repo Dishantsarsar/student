@@ -53,9 +53,16 @@ function Home() {
   ];
 
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const [selectedSubItem, setSelectedSubItem] = useState(null);
 
-  const openModal = (feature) => setSelectedFeature(feature);
-  const closeModal = () => setSelectedFeature(null);
+  const openModal = (feature) => {
+    setSelectedFeature(feature);
+    setSelectedSubItem(null);
+  };
+  const closeModal = () => {
+    setSelectedFeature(null);
+    setSelectedSubItem(null);
+  };
 
   return (
     <div className="home-container">
@@ -154,63 +161,92 @@ function Home() {
       {selectedFeature && (
         <div className="home-modal-overlay" onClick={closeModal}>
           <div className="home-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="home-close-btn" onClick={closeModal}>✕</button>
-            <div className="home-modal-header">
-              <div className="feature-icon modal-icon">{selectedFeature.icon}</div>
-              <h2 className="home-modal-title">{selectedFeature.title}</h2>
-            </div>
-            <div className="home-modal-body">
-              <p className="modal-description">{selectedFeature.detailedInfo}</p>
-              
-              {selectedFeature.contentType === 'instructors' && (
-                <div className="modal-list-grid">
-                  {selectedFeature.contentList.map((item, idx) => (
-                    <div key={idx} className="modal-list-item">
-                      <div className="item-avatar">{item.avatar}</div>
-                      <div className="item-details">
-                        <h4>{item.name}</h4>
-                        <p className="item-role">{item.role}</p>
-                        <span className="item-meta">{item.experience}</span>
-                      </div>
+            {selectedSubItem ? (
+              <>
+                <button className="home-close-btn" onClick={() => setSelectedSubItem(null)}>✕</button>
+                <div className="home-modal-body" style={{ marginTop: '20px' }}>
+                  <div className="modal-list-item" style={{ cursor: 'default', background: 'transparent', border: 'none', padding: 0, display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <div className="item-avatar" style={{ width: '80px', height: '80px', fontSize: '3rem', flexShrink: 0 }}>
+                      {selectedSubItem.icon || selectedSubItem.avatar || selectedSubItem.image}
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {selectedFeature.contentType === 'projects' && (
-                <div className="modal-list-grid">
-                  {selectedFeature.contentList.map((item, idx) => (
-                    <div key={idx} className="modal-list-item">
-                      <div className="item-avatar">{item.icon}</div>
-                      <div className="item-details">
-                        <h4>{item.name}</h4>
-                        <p className="item-desc">{item.desc}</p>
-                        <span className="item-meta">Tech: {item.tech}</span>
-                      </div>
+                    <div className="item-details" style={{ textAlign: 'left' }}>
+                      <h3 style={{ fontSize: '1.6rem', color: '#fff', margin: '0 0 8px 0', fontWeight: '800' }}>
+                        {selectedSubItem.name}
+                      </h3>
+                      <p className="item-desc" style={{ fontSize: '1.05rem', color: '#b0aec6', margin: '0 0 12px 0', lineHeight: '1.6' }}>
+                        {selectedSubItem.desc || selectedSubItem.role || (selectedSubItem.issuer ? `Issuer: ${selectedSubItem.issuer}` : '')}
+                      </p>
+                      {selectedSubItem.tech && <span className="item-meta">Tech: {selectedSubItem.tech}</span>}
+                      {selectedSubItem.experience && <span className="item-meta">{selectedSubItem.experience}</span>}
+                      {selectedSubItem.highlight && <span className="item-meta cert-highlight">{selectedSubItem.highlight}</span>}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              )}
-
-              {selectedFeature.contentType === 'certificates' && (
-                <div className="modal-list-grid">
-                  {selectedFeature.contentList.map((item, idx) => (
-                    <div key={idx} className="modal-list-item certificate-item">
-                      <div className="item-avatar cert-icon">{item.image}</div>
-                      <div className="item-details">
-                        <h4>{item.name}</h4>
-                        <p className="item-role">Issuer: {item.issuer}</p>
-                        <span className="item-meta cert-highlight">{item.highlight}</span>
-                      </div>
+                <div className="home-modal-footer">
+                  <button className="btn-primary" onClick={() => setSelectedSubItem(null)}>Got it!</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <button className="home-close-btn" onClick={closeModal}>✕</button>
+                <div className="home-modal-header">
+                  <div className="feature-icon modal-icon">{selectedFeature.icon}</div>
+                  <h2 className="home-modal-title">{selectedFeature.title}</h2>
+                </div>
+                <div className="home-modal-body">
+                  <p className="modal-description">{selectedFeature.detailedInfo}</p>
+                  
+                  {selectedFeature.contentType === 'instructors' && (
+                    <div className="modal-list-grid">
+                      {selectedFeature.contentList.map((item, idx) => (
+                        <div key={idx} className="modal-list-item" onClick={() => setSelectedSubItem(item)}>
+                          <div className="item-avatar">{item.avatar}</div>
+                          <div className="item-details">
+                            <h4>{item.name}</h4>
+                            <p className="item-role">{item.role}</p>
+                            <span className="item-meta">{item.experience}</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              )}
+                  )}
 
-            </div>
-            <div className="home-modal-footer">
-               <button className="btn-primary" onClick={closeModal}>Got it!</button>
-            </div>
+                  {selectedFeature.contentType === 'projects' && (
+                    <div className="modal-list-grid">
+                      {selectedFeature.contentList.map((item, idx) => (
+                        <div key={idx} className="modal-list-item" onClick={() => setSelectedSubItem(item)}>
+                          <div className="item-avatar">{item.icon}</div>
+                          <div className="item-details">
+                            <h4>{item.name}</h4>
+                            <p className="item-desc">{item.desc}</p>
+                            <span className="item-meta">Tech: {item.tech}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {selectedFeature.contentType === 'certificates' && (
+                    <div className="modal-list-grid">
+                      {selectedFeature.contentList.map((item, idx) => (
+                        <div key={idx} className="modal-list-item certificate-item" onClick={() => setSelectedSubItem(item)}>
+                          <div className="item-avatar cert-icon">{item.image}</div>
+                          <div className="item-details">
+                            <h4>{item.name}</h4>
+                            <p className="item-role">Issuer: {item.issuer}</p>
+                            <span className="item-meta cert-highlight">{item.highlight}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                </div>
+                <div className="home-modal-footer">
+                  <button className="btn-primary" onClick={closeModal}>Got it!</button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

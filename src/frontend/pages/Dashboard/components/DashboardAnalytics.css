@@ -1,0 +1,227 @@
+/* ── Analytics ── */
+.dash-analytics { display: flex; flex-direction: column; gap: 24px; }
+
+.analytics-summary-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.analytics-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* ── Chart ── */
+.analytics-chart-card { display: flex; flex-direction: column; gap: 20px; }
+
+.analytics-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.analytics-chart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.analytics-tabs { display: flex; gap: 6px; }
+
+.analytics-tab {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', inherit;
+}
+
+.analytics-tab.active {
+  background: rgba(0,242,254,0.1);
+  border-color: rgba(0,242,254,0.25);
+  color: #00f2fe;
+}
+
+/* ── Bar Chart ── */
+.analytics-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 140px;
+  padding-bottom: 28px;
+  position: relative;
+}
+
+.analytics-bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.analytics-bar-label-top {
+  position: absolute;
+  top: -22px;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+}
+
+.analytics-bar-track {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+
+.analytics-bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, #00f2fe, #4facfe);
+  border-radius: 6px 6px 0 0;
+  transition: height 1s cubic-bezier(0.4,0,0.2,1);
+  min-height: 4px;
+  position: relative;
+}
+
+.analytics-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 30%;
+  background: rgba(255,255,255,0.2);
+  border-radius: 6px 6px 0 0;
+}
+
+.analytics-bar-day {
+  position: absolute;
+  bottom: -22px;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+}
+
+/* ── Skills ── */
+.analytics-skills-card { display: flex; flex-direction: column; }
+
+.analytics-skills-list { display: flex; flex-direction: column; gap: 14px; }
+
+.analytics-skill-item { display: flex; flex-direction: column; gap: 6px; }
+
+.analytics-skill-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+
+.analytics-skill-name { color: rgba(255,255,255,0.7); font-weight: 500; }
+.analytics-skill-pct { font-weight: 700; }
+
+/* ── Course Table ── */
+.analytics-course-table { display: flex; flex-direction: column; gap: 12px; }
+
+.analytics-course-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s;
+}
+
+.analytics-course-row:hover { background: rgba(255,255,255,0.04); }
+
+.analytics-course-emoji { font-size: 1.8rem; flex-shrink: 0; }
+
+.analytics-course-info { flex: 1; }
+
+.analytics-course-name { font-size: 0.9rem; font-weight: 600; color: #fff; }
+
+.analytics-course-meta { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 2px; }
+
+.analytics-course-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.analytics-pct-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #00f2fe;
+  min-width: 36px;
+  text-align: right;
+}
+
+.analytics-pct-badge.complete { color: #34d399; }
+
+/* ── Heatmap ── */
+.analytics-heatmap {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+  position: relative;
+}
+
+.heatmap-cell:hover { transform: scale(1.2); z-index: 1; }
+
+.heatmap-day-num {
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+}
+
+.heatmap-legend-cell {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+@media (max-width: 1024px) {
+  .analytics-main-grid { grid-template-columns: 1fr; }
+  .analytics-summary-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .analytics-heatmap { grid-template-columns: repeat(6, 1fr); }
+  .analytics-course-progress-wrap { display: none; }
+}

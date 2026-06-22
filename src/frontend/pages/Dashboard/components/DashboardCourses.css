@@ -1,0 +1,203 @@
+/* ── Dashboard Courses ── */
+.dash-courses { display: flex; flex-direction: column; gap: 24px; }
+
+/* ── Toolbar ── */
+.courses-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.courses-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.courses-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.courses-search-input {
+  width: 100%;
+  padding: 11px 14px 11px 42px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Inter', inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.25s;
+  box-sizing: border-box;
+}
+
+.courses-search-input::placeholder { color: rgba(255,255,255,0.3); }
+
+.courses-search-input:focus {
+  border-color: rgba(0, 242, 254, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.08);
+}
+
+.courses-search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  cursor: pointer;
+}
+
+.courses-filter-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.courses-filter-tab {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', inherit;
+  white-space: nowrap;
+}
+
+.courses-filter-tab:hover {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+}
+
+.courses-filter-tab.active {
+  background: rgba(0,242,254,0.12);
+  border-color: rgba(0,242,254,0.25);
+  color: #00f2fe;
+}
+
+/* ── Premium Grid ── */
+.courses-premium-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+/* ── Premium Course Card ── */
+.course-premium-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  display: flex;
+  flex-direction: column;
+}
+
+.course-premium-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0,242,254,0.2);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,242,254,0.08);
+}
+
+.course-card-top {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.course-emoji-big {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  flex: 1;
+}
+
+.course-fav-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.course-fav-btn:hover { transform: scale(1.2); }
+
+.course-card-body {
+  padding: 0 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.course-card-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.course-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.course-card-desc {
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.course-card-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+}
+
+.course-card-progress { margin-top: 4px; }
+
+.course-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .courses-premium-grid { grid-template-columns: 1fr; }
+  .courses-toolbar { flex-direction: column; align-items: stretch; }
+}

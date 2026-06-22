@@ -481,3 +481,102 @@
     flex-direction: column;
   }
 }
+
+/* ═══════════════════════════════════════════════
+   NEW PREMIUM STUDENT DASHBOARD LAYOUT
+   (Does not affect Admin or Teacher dashboards)
+   ═══════════════════════════════════════════════ */
+
+.new-dashboard-page {
+  min-height: calc(100vh - 70px);
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Animated Background ── */
+.new-dashboard-bg {
+  position: fixed;
+  inset: 0;
+  background: #0a0a1a;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.nd-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.nd-orb1 {
+  width: 500px; height: 500px;
+  top: -150px; right: -100px;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.06) 0%, transparent 70%);
+  animation: orbFloat1 8s ease-in-out infinite;
+}
+
+.nd-orb2 {
+  width: 400px; height: 400px;
+  bottom: -100px; left: -80px;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.05) 0%, transparent 70%);
+  animation: orbFloat2 10s ease-in-out infinite;
+}
+
+.nd-orb3 {
+  width: 300px; height: 300px;
+  top: 40%; left: 40%;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.04) 0%, transparent 70%);
+  animation: orbFloat3 12s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(-30px, 20px); }
+}
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(20px, -30px); }
+}
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0); }
+  33%       { transform: translate(20px, 20px); }
+  66%       { transform: translate(-15px, 10px); }
+}
+
+/* ── Layout ── */
+.new-dashboard-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+/* ── Main Area ── */
+.new-dashboard-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.new-dashboard-content {
+  flex: 1;
+  padding: 36px 40px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .new-dashboard-content {
+    padding: 24px 20px;
+    padding-bottom: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .new-dashboard-content {
+    padding: 16px;
+    padding-bottom: 100px;
+  }
+}
