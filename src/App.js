@@ -6,6 +6,7 @@ import Home from './pages/Home/Home';
 import Courses from './pages/Courses/Courses';
 import Auth from './pages/Auth/Auth';
 import About from './pages/About/About';
+import Admin from './pages/Admin/Admin';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/courses" element={<Courses />} />
             <Route path="/about" element={<About />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
         <Footer />
