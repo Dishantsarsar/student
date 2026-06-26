@@ -1,0 +1,68 @@
+.premium-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 3, 17, 0.8);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.premium-modal-content {
+  background: linear-gradient(135deg, rgba(20, 15, 50, 0.95), rgba(10, 8, 30, 0.98));
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: 28px;
+  width: 100%;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 242, 254, 0.15);
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.premium-modal-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.premium-modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.premium-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.premium-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.25s ease;
+  z-index: 1;
+}
+
+.premium-modal-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+@media (max-width: 600px) {
+  .premium-modal-content {
+    padding: 28px 20px;
+    border-radius: 20px;
+    max-height: 90vh;
+  }
+}

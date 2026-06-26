@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Chatbot.css';
 
 const kb = [
@@ -103,8 +104,10 @@ function Chatbot() {
   const endRef = useRef(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (open) {
+      endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, open]);
 
   const send = async () => {
     const trimmed = input.trim();
@@ -130,11 +133,15 @@ function Chatbot() {
     } catch {
       clearTimeout(timer);
       const local = findLocal(trimmed);
-      if (local) {
-        setMessages((prev) => [...prev, { from: 'bot', text: local }]);
-      } else {
-        setMessages((prev) => [...prev, { from: 'bot', text: 'I am not sure about that. Please ask me about our courses, instructors, certificates, pricing, community, or anything related to Solution Adda!' }]);
-      }
+      setTimeout(() => {
+        if (local) {
+          setMessages((prev) => [...prev, { from: 'bot', text: local }]);
+        } else {
+          setMessages((prev) => [...prev, { from: 'bot', text: 'I am not sure about that. Please ask me about our courses, instructors, certificates, pricing, community, or anything related to Solution Adda!' }]);
+        }
+        setLoading(false);
+      }, 600); // Add a small delay for typing effect
+      return;
     }
     setLoading(false);
   };
@@ -169,16 +176,33 @@ function Chatbot() {
         </div>
 
         <div className="chat-body">
-          {messages.map((m, i) => (
-            <div key={i} className={`chat-msg ${m.from}`}>
-              <div className="msg-bubble">{m.text}</div>
-            </div>
-          ))}
-          {loading && (
-            <div className="chat-msg bot">
-              <div className="msg-bubble">Thinking...</div>
-            </div>
-          )}
+          <AnimatePresence initial={false}>
+            {messages.map((m, i) => (
+              <motion.div 
+                key={i} 
+                className={`chat-msg ${m.from}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="msg-bubble">{m.text}</div>
+              </motion.div>
+            ))}
+            {loading && (
+              <motion.div 
+                className="chat-msg bot"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+              >
+                <div className="msg-bubble">
+                  <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5 }}>.</motion.span>
+                  <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }}>.</motion.span>
+                  <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }}>.</motion.span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <div ref={endRef} />
         </div>
 
@@ -190,7 +214,7 @@ function Chatbot() {
             placeholder="Type your question..."
             disabled={loading}
           />
-          <button className="chat-send" onClick={send} disabled={loading}>
+          <button className="chat-send" onClick={send} disabled={loading || !input.trim()}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
             </svg>

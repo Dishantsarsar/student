@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './Auth.css';
 
 const UserIcon = () => (
@@ -107,6 +108,16 @@ function Auth() {
     }
   };
 
+  const formVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0 }
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-bg">
@@ -115,7 +126,12 @@ function Auth() {
         <div className="orb orb-3" />
       </div>
 
-      <div className="auth-card">
+      <motion.div 
+        className="auth-card"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
+      >
         <div className="auth-toggle">
           <div className={`toggle-slider ${isLogin ? '' : 'right'}`} />
           <button type="button" className={`toggle-btn ${isLogin ? 'active' : ''}`} onClick={() => !isLogin && toggleMode()}>
@@ -131,9 +147,16 @@ function Auth() {
           <p className="auth-desc">{isLogin ? 'Sign in to continue learning' : 'Start your learning journey'}</p>
         </div>
 
-        <form onSubmit={handleSubmit} noValidate>
+        <motion.form 
+          onSubmit={handleSubmit} 
+          noValidate
+          variants={formVariants}
+          initial="hidden"
+          animate="visible"
+          key={isLogin ? 'login' : 'signup'}
+        >
           {!isLogin && (
-            <div className="field">
+            <motion.div className="field" variants={itemVariants}>
               <label>Account Type</label>
               <div className="field-wrap role-wrap">
                 <span className="field-icon"><ShieldIcon /></span>
@@ -146,30 +169,30 @@ function Auth() {
                   Admin
                 </label>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {!isLogin && (
-            <div className={`field ${errors.name ? 'error' : ''}`}>
+            <motion.div className={`field ${errors.name ? 'error' : ''}`} variants={itemVariants}>
               <label>Full Name</label>
               <div className="field-wrap">
                 <span className="field-icon"><UserIcon /></span>
                 <input name="name" value={form.name} onChange={handleChange} placeholder="Enter your full name" autoComplete="name" />
               </div>
               {errors.name && <span className="field-err">{errors.name}</span>}
-            </div>
+            </motion.div>
           )}
 
-          <div className={`field ${errors.email ? 'error' : ''}`}>
+          <motion.div className={`field ${errors.email ? 'error' : ''}`} variants={itemVariants}>
             <label>Email Address</label>
             <div className="field-wrap">
               <span className="field-icon"><MailIcon /></span>
               <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Enter your email" autoComplete="email" />
             </div>
             {errors.email && <span className="field-err">{errors.email}</span>}
-          </div>
+          </motion.div>
 
-          <div className={`field ${errors.password ? 'error' : ''}`}>
+          <motion.div className={`field ${errors.password ? 'error' : ''}`} variants={itemVariants}>
             <label>Password</label>
             <div className="field-wrap">
               <span className="field-icon"><LockIcon /></span>
@@ -179,12 +202,12 @@ function Auth() {
               </button>
             </div>
             {errors.password && <span className="field-err">{errors.password}</span>}
-          </div>
+          </motion.div>
 
-          <button type="submit" className="submit-auth">
+          <motion.button type="submit" className="submit-auth" variants={itemVariants} whileTap={{ scale: 0.98 }}>
             {isLogin ? 'Sign In' : 'Create Account'}
-          </button>
-        </form>
+          </motion.button>
+        </motion.form>
 
         <p className="switch-text">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
@@ -192,7 +215,7 @@ function Auth() {
             {isLogin ? 'Sign Up' : 'Sign In'}
           </span>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
