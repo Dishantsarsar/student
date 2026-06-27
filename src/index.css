@@ -3,6 +3,10 @@
    Apple × Linear × Vercel × Stripe inspired
    ═══════════════════════════════════════════════════════ */
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ─── Design Tokens ─── */
@@ -128,43 +132,6 @@ body {
   position: relative;
 }
 
-/* ─── Premium Dynamic Aurora Background ─── */
-body::before,
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.4;
-  filter: blur(100px);
-  will-change: transform;
-}
-
-body::before {
-  background: radial-gradient(circle at 15% 50%, rgba(0, 242, 254, 0.15), transparent 40%);
-  animation: aurora-float-1 20s ease-in-out infinite alternate;
-}
-
-body::after {
-  background: radial-gradient(circle at 85% 30%, rgba(252, 0, 255, 0.1), transparent 40%);
-  animation: aurora-float-2 25s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes aurora-float-1 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(10vw, 5vh) scale(1.1); }
-  100% { transform: translate(-5vw, 15vh) scale(0.9); }
-}
-
-@keyframes aurora-float-2 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-10vw, -10vh) scale(1.2); }
-  100% { transform: translate(5vw, -5vh) scale(0.8); }
-}
 
 img, video, svg {
   max-width: 100%;

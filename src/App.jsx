@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ToastProvider } from './contexts/ToastContext';
 import CommandPalette from './components/ui/CommandPalette';
+import InteractiveBackground from './components/ui/InteractiveBackground';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
@@ -28,6 +29,11 @@ const pageTransition = {
 /* Animated routes wrapper */
 function AnimatedRoutes() {
   const location = useLocation();
+
+  /* Scroll to top on every route change */
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
@@ -58,6 +64,7 @@ function App() {
     <ThemeProvider>
       <ToastProvider>
         <Router>
+          <InteractiveBackground />
           <div className="app">
             <CommandPalette />
             <Navbar />

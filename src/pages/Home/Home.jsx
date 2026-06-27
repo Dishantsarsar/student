@@ -77,7 +77,7 @@ function Home() {
   ];
 
   const [selectedFeature, setSelectedFeature] = useState(null);
-  const [scrolled, setScrolled] = useState(false);
+
   const [activeWorkflow, setActiveWorkflow] = useState(0);
 
   const workflowSteps = [
