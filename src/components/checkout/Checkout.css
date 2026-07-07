@@ -1,0 +1,33 @@
+.checkout-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.checkout-tabs {
+  margin-bottom: var(--space-4);
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.upi-help-text {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-2) 0;
+}

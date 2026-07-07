@@ -7,19 +7,42 @@
   align-items: center;
   justify-content: center;
   z-index: 10000;
-  padding: 20px;
+  padding: var(--space-5);
 }
 
 .premium-modal-content {
-  background: linear-gradient(135deg, rgba(20, 15, 50, 0.95), rgba(10, 8, 30, 0.98));
-  border: 1px solid rgba(0, 242, 254, 0.2);
-  border-radius: 28px;
+  background: var(--gradient-surface);
+  border: 1px solid var(--color-border-hover);
+  border-radius: var(--radius-2xl);
   width: 100%;
-  padding: 40px;
+  padding: var(--space-10);
   position: relative;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 242, 254, 0.15);
+  box-shadow: var(--shadow-xl), 0 0 40px rgba(0, 242, 254, 0.15);
   max-height: 85vh;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.premium-modal-header {
+  margin-bottom: var(--space-6);
+  padding-right: var(--space-8); /* leave room for close button */
+}
+
+.premium-modal-title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.premium-modal-description {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.premium-modal-body {
+  flex: 1;
 }
 
 .premium-modal-content::-webkit-scrollbar {
@@ -37,8 +60,8 @@
 
 .premium-modal-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 24px;
+  right: 24px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -50,7 +73,7 @@
   cursor: pointer;
   color: rgba(255, 255, 255, 0.6);
   transition: all 0.25s ease;
-  z-index: 1;
+  z-index: 10;
 }
 
 .premium-modal-close:hover {
@@ -61,8 +84,8 @@
 
 @media (max-width: 600px) {
   .premium-modal-content {
-    padding: 28px 20px;
-    border-radius: 20px;
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--radius-lg);
     max-height: 90vh;
   }
 }

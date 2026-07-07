@@ -37,7 +37,9 @@
 }
 
 .toast-info {
-  border-left: 4px solid var(--color-accent-cyan);
+  background: rgba(0, 242, 254, 0.1);
+  border-left: 4px solid var(--color-primary);
+  color: var(--color-primary);
 }
 
 .toast-warning {

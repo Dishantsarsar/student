@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useInView } from 'framer-motion';
 import './StatCard.css';
 
 /* Animated counter hook */
-function useCounter(end, duration = 1500) {
+function useCounter(end, duration = 1500, startAnimating = true) {
   const [count, setCount] = useState(0);
   useEffect(() => {
-    if (end <= 0) return;
+    if (end <= 0 || !startAnimating) return;
     let start = 0;
     const increment = Math.ceil(end / 40);
     const timer = setInterval(() => {
@@ -18,25 +19,27 @@ function useCounter(end, duration = 1500) {
       }
     }, duration / 40);
     return () => clearInterval(timer);
-  }, [end, duration]);
+  }, [end, duration, startAnimating]);
   return count;
 }
 
 /* Premium statistics card with animated counter, icon, trend, mini sparkline */
 function StatCard({ icon, label, value, suffix = '', trend, trendValue, gradient = 'cyan', className = '' }) {
-  const animatedValue = useCounter(typeof value === 'number' ? value : 0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const animatedValue = useCounter(typeof value === 'number' ? value : 0, 1500, isInView);
   const displayValue = typeof value === 'number' ? animatedValue.toLocaleString() : value;
 
   const gradientMap = {
     cyan: 'linear-gradient(135deg, rgba(0,242,254,0.15), rgba(79,172,254,0.15))',
     magenta: 'linear-gradient(135deg, rgba(252,0,255,0.15), rgba(79,172,254,0.15))',
-    green: 'linear-gradient(135deg, rgba(39,201,63,0.15), rgba(0,242,254,0.15))',
-    orange: 'linear-gradient(135deg, rgba(255,189,46,0.15), rgba(252,0,255,0.15))',
+    green: 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(0,242,254,0.15))',
+    orange: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(252,0,255,0.15))',
     blue: 'linear-gradient(135deg, rgba(79,172,254,0.15), rgba(0,242,254,0.15))',
   };
 
   return (
-    <div className={`stat-card-premium ${className}`}>
+    <div ref={ref} className={`stat-card-premium ${className}`}>
       <div className="stat-card-icon" style={{ background: gradientMap[gradient] || gradientMap.cyan }}>
         <span>{icon}</span>
       </div>

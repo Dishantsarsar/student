@@ -1,41 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import GlassCard from '../../components/ui/GlassCard';
+import Input from '../../components/ui/Input';
+import Button from '../../components/ui/Button';
+import { User, Mail, Lock, Shield, Eye, EyeOff } from 'lucide-react';
 import './Auth.css';
-
-const UserIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-  </svg>
-);
-
-const MailIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-  </svg>
-);
-
-const LockIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
-);
-
-const EyeIcon = ({ open }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    {open ? (
-      <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>
-    ) : (
-      <><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></>
-    )}
-  </svg>
-);
-
-const ShieldIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-  </svg>
-);
 
 const initialSignup = { name: '', email: '', password: '', role: 'user' };
 const initialLogin = { email: '', password: '' };
@@ -93,7 +63,7 @@ function Auth() {
         return;
       }
       localStorage.setItem('sa_user', JSON.stringify({ name: user.name, email: user.email, role: user.role }));
-      navigate(user.role === 'admin' ? '/admin' : '/');
+      navigate(user.role === 'admin' ? '/admin' : '/dashboard');
     } else {
       const users = JSON.parse(localStorage.getItem('sa_users') || '[]');
       if (users.find((u) => u.email === form.email)) {
@@ -104,7 +74,7 @@ function Auth() {
       users.push(newUser);
       localStorage.setItem('sa_users', JSON.stringify(users));
       localStorage.setItem('sa_user', JSON.stringify({ name: newUser.name, email: newUser.email, role: newUser.role }));
-      navigate(newUser.role === 'admin' ? '/admin' : '/');
+      navigate(newUser.role === 'admin' ? '/admin' : '/dashboard');
     }
   };
 
@@ -127,11 +97,11 @@ function Auth() {
       </div>
 
       <motion.div 
-        className="auth-card"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
       >
+        <GlassCard className="auth-card">
         <div className="auth-toggle">
           <div className={`toggle-slider ${isLogin ? '' : 'right'}`} />
           <button type="button" className={`toggle-btn ${isLogin ? 'active' : ''}`} onClick={() => !isLogin && toggleMode()}>
@@ -154,12 +124,13 @@ function Auth() {
           initial="hidden"
           animate="visible"
           key={isLogin ? 'login' : 'signup'}
+          style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}
         >
           {!isLogin && (
-            <motion.div className="field" variants={itemVariants}>
-              <label>Account Type</label>
-              <div className="field-wrap role-wrap">
-                <span className="field-icon"><ShieldIcon /></span>
+            <motion.div variants={itemVariants}>
+              <label style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-2)', display: 'block' }}>Account Type</label>
+              <div className="role-wrap">
+                <Shield size={16} color="var(--color-text-muted)" style={{ marginLeft: 'var(--space-2)' }} />
                 <label className={`role-option ${form.role === 'user' ? 'active' : ''}`}>
                   <input type="radio" name="role" value="user" checked={form.role === 'user'} onChange={handleChange} />
                   User
@@ -173,40 +144,64 @@ function Auth() {
           )}
 
           {!isLogin && (
-            <motion.div className={`field ${errors.name ? 'error' : ''}`} variants={itemVariants}>
-              <label>Full Name</label>
-              <div className="field-wrap">
-                <span className="field-icon"><UserIcon /></span>
-                <input name="name" value={form.name} onChange={handleChange} placeholder="Enter your full name" autoComplete="name" />
-              </div>
-              {errors.name && <span className="field-err">{errors.name}</span>}
+            <motion.div variants={itemVariants}>
+              <Input 
+                label="Full Name"
+                name="name" 
+                value={form.name} 
+                onChange={handleChange} 
+                placeholder="Enter your full name" 
+                autoComplete="name"
+                icon={<User size={18} />}
+                error={errors.name}
+              />
             </motion.div>
           )}
 
-          <motion.div className={`field ${errors.email ? 'error' : ''}`} variants={itemVariants}>
-            <label>Email Address</label>
-            <div className="field-wrap">
-              <span className="field-icon"><MailIcon /></span>
-              <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Enter your email" autoComplete="email" />
-            </div>
-            {errors.email && <span className="field-err">{errors.email}</span>}
+          <motion.div variants={itemVariants}>
+            <Input 
+              label="Email Address"
+              name="email" 
+              type="email" 
+              value={form.email} 
+              onChange={handleChange} 
+              placeholder="Enter your email" 
+              autoComplete="email"
+              icon={<Mail size={18} />}
+              error={errors.email}
+            />
           </motion.div>
 
-          <motion.div className={`field ${errors.password ? 'error' : ''}`} variants={itemVariants}>
-            <label>Password</label>
-            <div className="field-wrap">
-              <span className="field-icon"><LockIcon /></span>
-              <input name="password" type={showPassword ? 'text' : 'password'} value={form.password} onChange={handleChange} placeholder="Enter your password" autoComplete={isLogin ? 'current-password' : 'new-password'} />
-              <button type="button" className="toggle-pass" onClick={() => setShowPassword((prev) => !prev)} tabIndex={-1}>
-                <EyeIcon open={showPassword} />
+          <motion.div variants={itemVariants}>
+            <div style={{ position: 'relative' }}>
+              <Input 
+                label="Password"
+                name="password" 
+                type={showPassword ? 'text' : 'password'} 
+                value={form.password} 
+                onChange={handleChange} 
+                placeholder="Enter your password" 
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
+                icon={<Lock size={18} />}
+                error={errors.password}
+              />
+              <button 
+                type="button" 
+                className="toggle-pass" 
+                onClick={() => setShowPassword((prev) => !prev)} 
+                tabIndex={-1}
+                style={{ position: 'absolute', right: '12px', top: '38px' }}
+              >
+                {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
             </div>
-            {errors.password && <span className="field-err">{errors.password}</span>}
           </motion.div>
 
-          <motion.button type="submit" className="submit-auth" variants={itemVariants} whileTap={{ scale: 0.98 }}>
-            {isLogin ? 'Sign In' : 'Create Account'}
-          </motion.button>
+          <motion.div variants={itemVariants} style={{ marginTop: 'var(--space-2)' }}>
+            <Button type="submit" fullWidth variant="primary">
+              {isLogin ? 'Sign In' : 'Create Account'}
+            </Button>
+          </motion.div>
         </motion.form>
 
         <p className="switch-text">
@@ -215,6 +210,7 @@ function Auth() {
             {isLogin ? 'Sign Up' : 'Sign In'}
           </span>
         </p>
+        </GlassCard>
       </motion.div>
     </div>
   );

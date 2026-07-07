@@ -4,7 +4,7 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #050311;
+  background: var(--color-bg-primary);
 }
 
 /* Aurora gradient orbs */
@@ -18,7 +18,7 @@
 .aurora-1 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, #00f2fe, transparent 70%);
+  background: radial-gradient(circle, var(--color-primary), transparent 70%);
   top: -15%;
   right: -10%;
   animation: auroraFloat1 16s ease-in-out infinite;
@@ -27,7 +27,7 @@
 .aurora-2 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, #fc00ff, transparent 70%);
+  background: radial-gradient(circle, var(--color-accent), transparent 70%);
   bottom: -10%;
   left: -5%;
   animation: auroraFloat2 20s ease-in-out infinite;
@@ -36,7 +36,7 @@
 .aurora-3 {
   width: 350px;
   height: 350px;
-  background: radial-gradient(circle, #4facfe, transparent 70%);
+  background: radial-gradient(circle, var(--color-secondary), transparent 70%);
   top: 40%;
   left: 30%;
   animation: auroraFloat3 18s ease-in-out infinite;
@@ -47,8 +47,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
   background-size: 60px 60px;
   opacity: 0.5;
 }
