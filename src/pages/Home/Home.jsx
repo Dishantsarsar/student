@@ -1,45 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import Chatbot from '../../components/Chatbot/Chatbot';
+import SectionReveal, { RevealItem } from '../../components/ui/SectionReveal';
+import StatCard from '../../components/ui/StatCard';
+import Button from '../../components/ui/Button';
+import GlassCard from '../../components/ui/GlassCard';
+import AnimatedBackground from '../../components/ui/AnimatedBackground';
 import './Home.css';
 
-// Counter component for animated counters
-function Counter({ end, suffix = "", duration = 1500 }) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let start = 0;
-    if (end <= 0) return;
-    const increment = Math.ceil(end / 40);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        clearInterval(timer);
-        setCount(end);
-      } else {
-        setCount(start);
-      }
-    }, 30);
-    return () => clearInterval(timer);
-  }, [end]);
-
-  return <span>{count.toLocaleString()}{suffix}</span>;
-}
-
 function Home() {
-  // Why Choose Us (featuresData) - modal functionality preserved
   const featuresData = [
     {
       id: "instructors",
-      icon: (
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2L2 7l10 5 10-5-10-5z" />
-          <path d="M7 14v4a5 5 0 0 0 10 0v-4" />
-          <path d="M22 7v6h-2" />
-        </svg>
-      ),
+      icon: "👨‍🏫",
       title: "Expert Instructors",
-      shortDesc: "Learn directly from experienced industry professionals who simplify complex concepts and share practical real-world knowledge.",
+      shortDesc: "Learn directly from experienced industry professionals who simplify complex concepts.",
       detailedInfo: "Our instructors are vetted professionals with over 10+ years of experience in top tech companies like Google and Amazon.",
       contentType: "instructors",
       contentList: [
@@ -49,17 +25,9 @@ function Home() {
     },
     {
       id: "projects",
-      icon: (
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-          <line x1="8" y1="21" x2="16" y2="21" />
-          <line x1="12" y1="17" x2="12" y2="21" />
-          <path d="M10 9l-2 2 2 2" />
-          <path d="M14 9l2 2-2 2" />
-        </svg>
-      ),
+      icon: "💻",
       title: "Hands-on Projects",
-      shortDesc: "Work on practical projects that strengthen your portfolio and give you the confidence to solve real industry problems.",
+      shortDesc: "Work on practical projects that strengthen your portfolio and confidence.",
       detailedInfo: "Stop watching and start building. Here are some of the projects you will build to prove your skills:",
       contentType: "projects",
       contentList: [
@@ -69,14 +37,9 @@ function Home() {
     },
     {
       id: "certificates",
-      icon: (
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="8" r="7" />
-          <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12" />
-        </svg>
-      ),
+      icon: "🎓",
       title: "Industry-Recognized Certificates",
-      shortDesc: "Earn certificates upon course completion that validate your skills and enhance your resume for better career opportunities.",
+      shortDesc: "Earn certificates upon course completion that validate your skills.",
       detailedInfo: "Earn certificates that prove your skills to employers globally.",
       contentType: "certificates",
       contentList: [
@@ -86,529 +49,329 @@ function Home() {
     },
     {
       id: "community",
-      icon: (
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
-      ),
+      icon: "🌐",
       title: "Community & Mentor Support",
-      shortDesc: "Become part of an active learning community where mentors and peers support your growth throughout your learning journey.",
-      detailedInfo: "Get 24/7 access to our private Discord server. Participate in weekly hackathons, study groups, and get instant debugging help from peers and alumni who have already landed top jobs.",
+      shortDesc: "Become part of an active learning community where mentors and peers support you.",
+      detailedInfo: "Get 24/7 access to our private Discord server. Participate in weekly hackathons, study groups, and get instant debugging help.",
       contentType: "text",
       contentList: []
     },
     {
       id: "career",
-      icon: (
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4.5 16.5c-1.5 1.5-2.5 3.5-2.5 5.5C4 22 6 21 7.5 19.5" />
-          <path d="M12 2C6 2 2 6 2 12c0 3.5 1.5 6.5 4 8.5" />
-          <path d="M22 2l-6 6" />
-          <path d="M9 15l3-3" />
-          <path d="M12 2s4 4 10 10c0 0-4-4-10-10z" />
-        </svg>
-      ),
+      icon: "🚀",
       title: "Career-Focused Learning",
-      shortDesc: "Every course is designed with industry requirements in mind, helping you become job-ready through practical and relevant skills.",
-      detailedInfo: "Every single course is aligned with current job descriptions in the industry. We provide career support, resume reviews, portfolio setup guidelines, and mock interviews to make sure you successfully pass technical screens.",
+      shortDesc: "Every course is designed with industry requirements in mind, making you job-ready.",
+      detailedInfo: "Every single course is aligned with current job descriptions in the industry. We provide career support, resume reviews, and mock interviews.",
       contentType: "text",
       contentList: []
     },
     {
       id: "roadmap",
-      icon: (
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-        </svg>
-      ),
+      icon: "🗺️",
       title: "Structured Learning Roadmap",
-      shortDesc: "Follow a clear, step-by-step roadmap that guides you from beginner to advanced without confusion or information overload.",
-      detailedInfo: "Don't get lost in tutorial hell. Our structured roadmaps take you step-by-step from core syntax to complex system design. Every milestone has direct assessments to verify you have fully mastered the concepts before moving on.",
+      shortDesc: "Follow a clear, step-by-step roadmap that guides you from beginner to advanced.",
+      detailedInfo: "Don't get lost in tutorial hell. Our structured roadmaps take you step-by-step from core syntax to complex system design.",
       contentType: "text",
       contentList: []
     }
   ];
 
   const [selectedFeature, setSelectedFeature] = useState(null);
-  const openModal = (feature) => setSelectedFeature(feature);
-  const closeModal = () => setSelectedFeature(null);
+
+  const [activeWorkflow, setActiveWorkflow] = useState(0);
+
+  const workflowSteps = [
+    { title: 'Explore', desc: 'Discover premium courses tailored to your career goals.' },
+    { title: 'Enroll', desc: 'Sign up and get instant access to all course materials.' },
+    { title: 'Watch', desc: 'Learn from high-quality, on-demand video lectures.' },
+    { title: 'Build', desc: 'Apply your knowledge through hands-on practical projects.' },
+    { title: 'Track', desc: 'Monitor your progress and stay motivated with our dashboard.' },
+    { title: 'Certify', desc: 'Earn verifiable certificates upon successful completion.' },
+    { title: 'Career', desc: 'Unlock new career opportunities with your upgraded skills.' }
+  ];
 
   return (
     <div className="home-container">
-      {/* SECTION 1: Hero */}
-      <header className="hero-section">
+      <AnimatedBackground variant="dynamic" />
+
+      {/* Hero Section */}
+      <section className="premium-hero">
         <div className="hero-content">
-          <div className="hero-badge">New: AI & Machine Learning Courses! 🚀</div>
-          <h1 className="hero-title">Unlock Your Future in <span className="highlight">Tech</span></h1>
-          <p className="hero-subtitle">
-            Master the most in-demand skills with our comprehensive, expert-led courses in Web Development, AI, Cloud Computing, and more.
-          </p>
-          <div className="hero-buttons">
-            <Link to="/courses" className="btn-primary">Explore Courses</Link>
-            <a href="#overview" className="btn-secondary">Learn More</a>
-          </div>
+          <SectionReveal direction="down" delay={0.1}>
+            <div className="hero-badge">
+              <span className="badge-dot"></span> New: AI & Machine Learning Courses! 🚀
+            </div>
+            <h1 className="hero-title">
+              Unlock Your Future in <span className="text-gradient">Tech</span>
+            </h1>
+            <p className="hero-subtitle">
+              Master the most in-demand skills with our comprehensive, expert-led courses in Web Development, AI, Cloud Computing, and more.
+            </p>
+            <div className="hero-cta-group">
+              <Link to="/courses">
+                <Button size="lg" variant="primary">Explore Courses</Button>
+              </Link>
+              <a href="#overview">
+                <Button size="lg" variant="secondary">Learn More</Button>
+              </a>
+            </div>
+          </SectionReveal>
         </div>
-        
-        {/* Interactive LMS Dashboard Illustration */}
-        <div className="hero-visual-container">
-          <div className="gradient-glow-orb orb-1"></div>
-          <div className="gradient-glow-orb orb-2"></div>
-          
-          <div className="laptop-mockup">
-            <div className="laptop-screen">
-              <div className="dashboard-header">
-                <span className="window-dots"><span className="red"></span><span className="yellow"></span><span className="green"></span></span>
-                <span className="dashboard-title">Student Dashboard Console</span>
+
+        {/* Abstract 3D/Glass Visual for Hero */}
+        <div className="hero-visual">
+          <SectionReveal direction="up" delay={0.3}>
+            <GlassCard glow hover={false} className="mockup-card">
+              <div className="mockup-header">
+                <div className="window-controls">
+                  <span className="dot red"></span>
+                  <span className="dot yellow"></span>
+                  <span className="dot green"></span>
+                </div>
+                <div className="mockup-title">Student Dashboard</div>
               </div>
-              <div className="dashboard-editor">
-                <div className="dashboard-row flex justify-between">
-                  <div className="lms-card-mini">
-                    <span className="lms-card-title">Enrolled Courses</span>
-                    <span className="lms-card-value font-bold">5 Courses</span>
+              <div className="mockup-body">
+                <div className="mockup-stats">
+                  <div className="mock-stat-box">
+                    <span>Enrolled Courses</span>
+                    <strong>5 Courses</strong>
                   </div>
-                  <div className="lms-card-mini">
-                    <span className="lms-card-title">Overall Progress</span>
-                    <span className="lms-card-value font-bold text-cyan">78%</span>
+                  <div className="mock-stat-box">
+                    <span>Overall Progress</span>
+                    <strong className="text-cyan">78%</strong>
                   </div>
                 </div>
-                <div className="dashboard-progress-track">
-                  <div className="progress-label flex justify-between">
+                <div className="mockup-progress">
+                  <div className="prog-label">
                     <span>Web Development Bootcamp</span>
                     <span>85%</span>
                   </div>
-                  <div className="progress-bar-bg"><div className="progress-bar-fill" style={{ width: '85%' }}></div></div>
+                  <div className="prog-bar"><div className="prog-fill" style={{ width: '85%' }}></div></div>
                 </div>
-                <div className="dashboard-progress-track">
-                  <div className="progress-label flex justify-between">
+                <div className="mockup-progress">
+                  <div className="prog-label">
                     <span>Machine Learning Essentials</span>
                     <span>45%</span>
                   </div>
-                  <div className="progress-bar-bg"><div className="progress-bar-fill" style={{ width: '45%' }}></div></div>
+                  <div className="prog-bar"><div className="prog-fill" style={{ width: '45%' }}></div></div>
+                </div>
+                <div className="mockup-chart">
+                  <div className="chart-bar" style={{ height: '40%' }}></div>
+                  <div className="chart-bar" style={{ height: '70%' }}></div>
+                  <div className="chart-bar" style={{ height: '50%' }}></div>
+                  <div className="chart-bar" style={{ height: '90%' }}></div>
                 </div>
               </div>
-              <div className="dashboard-chart-preview">
-                <div className="chart-bar bar-1"></div>
-                <div className="chart-bar bar-2"></div>
-                <div className="chart-bar bar-3"></div>
-                <div className="chart-bar bar-4"></div>
-              </div>
-            </div>
-            <div className="laptop-base">
-              <div className="keyboard-indent"></div>
-            </div>
-          </div>
-
-          {/* Floating Badges */}
-          <div className="floating-badge badge-projects">
-            <span className="badge-icon">✓</span>
-            <span>Live Projects</span>
-          </div>
-          <div className="floating-badge badge-mentors">
-            <span className="badge-icon">✓</span>
-            <span>Industry Mentors</span>
-          </div>
-          <div className="floating-badge badge-skills">
-            <span className="badge-icon">✓</span>
-            <span>Job-Ready Skills</span>
-          </div>
-          <div className="floating-badge badge-support">
-            <span className="badge-icon">✓</span>
-            <span>Community Support</span>
-          </div>
-          <div className="floating-badge badge-certs">
-            <span className="badge-icon">✓</span>
-            <span>Certificates</span>
-          </div>
-          <div className="floating-badge badge-guidance">
-            <span className="badge-icon">✓</span>
-            <span>Career Guidance</span>
-          </div>
+            </GlassCard>
+            
+            {/* Floating Tags */}
+            <motion.div className="floating-tag tag-1" animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity }}>
+              <span>✓ Live Projects</span>
+            </motion.div>
+            <motion.div className="floating-tag tag-2" animate={{ y: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity, delay: 1 }}>
+              <span>✓ Industry Mentors</span>
+            </motion.div>
+          </SectionReveal>
         </div>
-      </header>
+      </section>
 
-      {/* SECTION 2: Platform Overview */}
-      <section className="overview-section" id="overview">
-        <div className="section-header">
-          <h2 className="section-title-gradient">One Platform for Modern Digital Learning</h2>
-          <p className="section-subtitle-center">
-            Bridge the gap between traditional education and digital accessibility through a centralized learning platform designed for students and instructors.
-          </p>
-        </div>
-        <div className="overview-content-grid">
-          <div className="overview-illustration-side">
-            <div className="illustration-wrapper">
-              <div className="circle-bg"></div>
-              <div className="mock-browser">
-                <div className="browser-header">
-                  <span className="dots"><span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span></span>
-                </div>
-                <div className="browser-body">
-                  <div className="mock-video-player">
-                    <div className="play-button">▶</div>
-                    <div className="video-progress"></div>
-                  </div>
-                  <div className="mock-instructor-card">
-                    <div className="avatar">👨‍🏫</div>
-                    <div className="details">
-                      <div className="name">Expert Instructor</div>
-                      <div className="meta">10+ Years Experience</div>
+      {/* Platform Overview */}
+      <section id="overview" className="section-padding">
+        <SectionReveal direction="up">
+          <div className="section-header-center">
+            <h2 className="section-title">One Platform for <span className="text-gradient">Modern Learning</span></h2>
+            <p className="section-subtitle">Bridge the gap between traditional education and digital accessibility.</p>
+          </div>
+        </SectionReveal>
+
+        <div className="overview-grid">
+          <SectionReveal direction="left" className="overview-illustration">
+             <GlassCard className="browser-mockup">
+               <div className="browser-top">
+                 <div className="window-controls">
+                   <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
+                 </div>
+               </div>
+               <div className="browser-content">
+                 <div className="video-skeleton">
+                   <div className="play-btn">▶</div>
+                 </div>
+                 <div className="instructor-badge-skel">
+                    <div className="ava">👨‍🏫</div>
+                    <div className="inf">
+                      <div className="n">Expert Instructor</div>
+                      <div className="d">10+ Years Experience</div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                 </div>
+               </div>
+             </GlassCard>
+          </SectionReveal>
           
-          <div className="overview-list-side">
-            <ul className="overview-checklist">
+          <SectionReveal direction="right" className="overview-list">
+            <ul className="premium-checklist">
               <li>
-                <span className="check-icon">✓</span>
-                <div className="checklist-text">
+                <div className="check-ring">✓</div>
+                <div>
                   <h3>Browse Premium Courses</h3>
                   <p>Access structured learning paths spanning Web Dev, AI, Cloud, and Python.</p>
                 </div>
               </li>
               <li>
-                <span className="check-icon">✓</span>
-                <div className="checklist-text">
+                <div className="check-ring">✓</div>
+                <div>
                   <h3>Watch Video Lectures</h3>
                   <p>High-quality streams with auto-resume functions to learn at your pace.</p>
                 </div>
               </li>
               <li>
-                <span className="check-icon">✓</span>
-                <div className="checklist-text">
+                <div className="check-ring">✓</div>
+                <div>
                   <h3>Track Learning Progress</h3>
                   <p>Visual statistics detailing your lessons, chapters, and completion milestones.</p>
                 </div>
               </li>
               <li>
-                <span className="check-icon">✓</span>
-                <div className="checklist-text">
+                <div className="check-ring">✓</div>
+                <div>
                   <h3>Earn Certificates</h3>
                   <p>Get recognized for your skills with partner-backed credentials.</p>
                 </div>
               </li>
-              <li>
-                <span className="check-icon">✓</span>
-                <div className="checklist-text">
-                  <h3>Learn from Industry Experts</h3>
-                  <p>Mentorship from vetted software engineers and architects.</p>
-                </div>
-              </li>
-              <li>
-                <span className="check-icon">✓</span>
-                <div className="checklist-text">
-                  <h3>Responsive Dashboard</h3>
-                  <p>Fully functional platform interface matching all devices smoothly.</p>
-                </div>
-              </li>
             </ul>
-          </div>
+          </SectionReveal>
         </div>
       </section>
 
-      {/* SECTION 3: Core Student Features */}
-      <section className="core-features-section">
-        <div className="section-header">
-          <h2 className="section-title-gradient">Core Student Features</h2>
-          <p className="section-subtitle-center">Empowering elements designed to accelerate comprehension and performance.</p>
-        </div>
-        <div className="core-features-grid">
-          <div className="core-feature-card">
-            <div className="core-icon-wrapper">🔍</div>
-            <h3>Course Discovery</h3>
-            <p>Advanced search and filtering to quickly find relevant courses.</p>
-            <div className="glow-overlay"></div>
+      {/* Features Grid */}
+      <section className="section-padding section-darker">
+        <SectionReveal direction="up">
+          <div className="section-header-center">
+            <h2 className="section-title">Why Choose <span className="text-gradient">Solution Adda?</span></h2>
+            <p className="section-subtitle">Discover a learning platform designed to help you master in-demand skills.</p>
           </div>
-          <div className="core-feature-card">
-            <div className="core-icon-wrapper">🎥</div>
-            <h3>Video Learning</h3>
-            <p>Integrated high-quality video player with resume functionality.</p>
-            <div className="glow-overlay"></div>
-          </div>
-          <div className="core-feature-card">
-            <div className="core-icon-wrapper">📈</div>
-            <h3>Progress Analytics</h3>
-            <p>Track completion percentage and learning milestones.</p>
-            <div className="glow-overlay"></div>
-          </div>
-          <div className="core-feature-card">
-            <div className="core-icon-wrapper">💻</div>
-            <h3>Hands-on Projects</h3>
-            <p>Practice with real-world assignments.</p>
-            <div className="glow-overlay"></div>
-          </div>
-          <div className="core-feature-card">
-            <div className="core-icon-wrapper">📜</div>
-            <h3>Certification</h3>
-            <p>Receive certificates after course completion.</p>
-            <div className="glow-overlay"></div>
-          </div>
-          <div className="core-feature-card">
-            <div className="core-icon-wrapper">👥</div>
-            <h3>Community Support</h3>
-            <p>Collaborate with mentors and fellow learners.</p>
-            <div className="glow-overlay"></div>
-          </div>
-        </div>
-      </section>
+        </SectionReveal>
 
-      {/* SECTION 4: Learning Workflow (Timeline) */}
-      <section className="workflow-section">
-        <div className="section-header">
-          <h2 className="section-title-gradient">Your Learning Workflow</h2>
-          <p className="section-subtitle-center">Follow our structured path to master technologies and launch your tech career.</p>
-        </div>
-        <div className="workflow-timeline">
-          <div className="timeline-step">
-            <div className="step-num">1</div>
-            <h4>Explore Courses</h4>
-            <span className="connector-arrow">→</span>
-          </div>
-          <div className="timeline-step">
-            <div className="step-num">2</div>
-            <h4>Enroll</h4>
-            <span className="connector-arrow">→</span>
-          </div>
-          <div className="timeline-step">
-            <div className="step-num">3</div>
-            <h4>Watch Lessons</h4>
-            <span className="connector-arrow">→</span>
-          </div>
-          <div className="timeline-step">
-            <div className="step-num">4</div>
-            <h4>Complete Projects</h4>
-            <span className="connector-arrow">→</span>
-          </div>
-          <div className="timeline-step">
-            <div className="step-num">5</div>
-            <h4>Track Progress</h4>
-            <span className="connector-arrow">→</span>
-          </div>
-          <div className="timeline-step">
-            <div className="step-num">6</div>
-            <h4>Earn Certificate</h4>
-            <span className="connector-arrow">→</span>
-          </div>
-          <div className="timeline-step">
-            <div className="step-num">7</div>
-            <h4>Get Career Ready</h4>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 6: Why Students Love Solution Adda */}
-      <section className="student-love-section">
-        <div className="section-header">
-          <h2 className="section-title-gradient">Why Students Love Solution Adda</h2>
-          <p className="section-subtitle-center">Built specifically for developer education, visual learners, and career builders.</p>
-        </div>
-        <div className="student-love-grid">
-          <div className="love-card">
-            <div className="love-icon">🎯</div>
-            <h4>Smart Course Discovery</h4>
-            <p>Filter by level, topic, or tech stack to find exactly what you want.</p>
-          </div>
-          <div className="love-card">
-            <div className="love-icon">📺</div>
-            <h4>Integrated Video Learning</h4>
-            <p>Access high-definition video playback with memory state tracking.</p>
-          </div>
-          <div className="love-card">
-            <div className="love-icon">📊</div>
-            <h4>Progress Dashboard</h4>
-            <p>View completion counts and modules left in custom analytics cards.</p>
-          </div>
-          <div className="love-card">
-            <div className="love-icon">🔑</div>
-            <h4>Secure Authentication</h4>
-            <p>Session tokens are encrypted and role permissions protect dashboards.</p>
-          </div>
-          <div className="love-card">
-            <div className="love-icon">⚡</div>
-            <h4>Fast Performance</h4>
-            <p>Webpack-optimized builds deliver lightning-fast initial load times.</p>
-          </div>
-          <div className="love-card">
-            <div className="love-icon">📱</div>
-            <h4>Responsive Design</h4>
-            <p>Enjoy desktop features when studying on tablets and smartphones.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 8: Learning Analytics (Stats) */}
-      <section className="stats-section">
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">👥</div>
-            <div className="stat-number"><Counter end={5000} suffix="+" /></div>
-            <div className="stat-label">Students Enrolled</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">💻</div>
-            <div className="stat-number"><Counter end={100} suffix="+" /></div>
-            <div className="stat-label">Hands-on Projects</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">📚</div>
-            <div className="stat-number"><Counter end={50} suffix="+" /></div>
-            <div className="stat-label">Premium Courses</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">⏱️</div>
-            <div className="stat-number"><Counter end={10000} suffix="+" /></div>
-            <div className="stat-label">Hours of Learning</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">😊</div>
-            <div className="stat-number"><Counter end={95} suffix="%" /></div>
-            <div className="stat-label">Course Completion Satisfaction</div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 10: Future Ready */}
-      <section className="future-ready-section">
-        <div className="section-header">
-          <h2 className="section-title-gradient">The Future of Learning Starts Here</h2>
-          <p className="section-subtitle-center">Sneak peek at upcoming AI features and collaborative modules scheduled soon.</p>
-        </div>
-        <div className="future-grid">
-          <div className="future-card-item">
-            <h4>AI-Powered Course Recommendations</h4>
-            <p>Personalized suggestions targeting gaps in student portfolios.</p>
-          </div>
-          <div className="future-card-item">
-            <h4>Personalized Learning Paths</h4>
-            <p>Dynamic timelines adjusting to individual speed and goals.</p>
-          </div>
-          <div className="future-card-item">
-            <h4>Peer-to-Peer Collaboration</h4>
-            <p>Pair programming features directly in the workspace.</p>
-          </div>
-          <div className="future-card-item">
-            <h4>Real-Time Messaging</h4>
-            <p>Connect with peers and instructors instantly in code chatrooms.</p>
-          </div>
-          <div className="future-card-item">
-            <h4>Smart Learning Analytics</h4>
-            <p>Receive reports detailing key study behaviors and habits.</p>
-          </div>
-          <div className="future-card-item">
-            <h4>Adaptive Assessments</h4>
-            <p>Self-adjusting tests matching your current level of competence.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 11: Why Choose Us (Modal features preserved) */}
-      <section className="features-section" id="features">
-        <div className="section-header">
-          <h2 className="section-title-gradient">Why Choose Solution Adda?</h2>
-          <p className="section-subtitle-center">
-            Discover a learning platform designed to help you master in-demand skills, build real-world experience, and confidently achieve your career goals.
-          </p>
-        </div>
-        <div className="features-grid">
+        <SectionReveal stagger={true} className="premium-features-grid">
           {featuresData.map((feature) => (
-            <div 
-              className="feature-card clickable" 
-              key={feature.id}
-              onClick={() => openModal(feature)}
-            >
-              <div className="feature-icon">{feature.icon}</div>
-              <h3>{feature.title}</h3>
-              <p>{feature.shortDesc}</p>
-            </div>
+            <RevealItem key={feature.id}>
+              <GlassCard 
+                className="feature-interactive-card" 
+                hover 
+                onClick={() => setSelectedFeature(feature)}
+              >
+                <div className="feature-icon-large">{feature.icon}</div>
+                <h3>{feature.title}</h3>
+                <p>{feature.shortDesc}</p>
+                <div className="learn-more-link">Learn More →</div>
+              </GlassCard>
+            </RevealItem>
           ))}
+        </SectionReveal>
+      </section>
+
+      {/* Stats Section */}
+      <section className="section-padding">
+        <SectionReveal stagger={true} className="stats-container">
+          <RevealItem><StatCard icon="👥" label="Students Enrolled" value={5000} suffix="+" gradient="cyan" /></RevealItem>
+          <RevealItem><StatCard icon="💻" label="Hands-on Projects" value={100} suffix="+" gradient="magenta" /></RevealItem>
+          <RevealItem><StatCard icon="📚" label="Premium Courses" value={50} suffix="+" gradient="blue" /></RevealItem>
+          <RevealItem><StatCard icon="😊" label="Satisfaction" value={95} suffix="%" gradient="green" /></RevealItem>
+        </SectionReveal>
+      </section>
+
+      {/* Workflow Section */}
+      <section className="section-padding section-darker">
+        <SectionReveal direction="up">
+          <div className="section-header-center">
+            <h2 className="section-title">Your Learning <span className="text-gradient">Workflow</span></h2>
+          </div>
+        </SectionReveal>
+        
+        <div className="workflow-interactive-container">
+          <SectionReveal stagger={true} className="workflow-timeline-premium">
+            {workflowSteps.map((step, idx) => (
+               <RevealItem 
+                 key={idx} 
+                 className={`timeline-node ${activeWorkflow === idx ? 'active' : ''}`}
+                 onClick={() => setActiveWorkflow(idx)}
+               >
+                 <div className="node-circle">{idx + 1}</div>
+                 <div className="node-label">{step.title}</div>
+               </RevealItem>
+            ))}
+          </SectionReveal>
+
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={activeWorkflow}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+              className="workflow-step-details"
+            >
+              <h3>{workflowSteps[activeWorkflow].title}</h3>
+              <p>{workflowSteps[activeWorkflow].desc}</p>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
-      {/* SECTION 12: Call To Action */}
-      <section className="cta-section-wrapper">
-        <div className="cta-glow-bg"></div>
-        <div className="cta-content">
-          <h2 className="cta-title">Start Your Learning Journey Today</h2>
-          <p className="cta-subheading">
-            Learn modern technologies through practical projects, expert guidance, and an interactive learning platform designed for career growth.
-          </p>
-          <div className="cta-buttons flex justify-center gap-4">
-            <Link to="/courses" className="btn-cta-explore">Explore Courses</Link>
-            <Link to="/auth" className="btn-secondary">Get Started</Link>
-          </div>
-        </div>
+      {/* CTA Section */}
+      <section className="section-padding cta-premium-section">
+        <SectionReveal direction="scale">
+          <GlassCard glow className="cta-box">
+            <h2 className="cta-title">Start Your Learning Journey Today</h2>
+            <p className="cta-desc">Learn modern technologies through practical projects and expert guidance.</p>
+            <div className="cta-actions">
+              <Link to="/courses"><Button size="lg" variant="primary">Explore Courses</Button></Link>
+              <Link to="/auth"><Button size="lg" variant="secondary">Sign Up Now</Button></Link>
+            </div>
+          </GlassCard>
+        </SectionReveal>
       </section>
 
-      {/* Feature Details Modal (Why Choose Us detailed popup) */}
-      {selectedFeature && (
-        <div className="home-modal-overlay" onClick={closeModal}>
-          <div className="home-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="home-close-btn" onClick={closeModal}>✕</button>
-            <div className="home-modal-header">
-              <div className="feature-icon modal-icon">{selectedFeature.icon}</div>
-              <h2 className="home-modal-title">{selectedFeature.title}</h2>
-            </div>
-            <div className="home-modal-body">
-              <p className="modal-description">{selectedFeature.detailedInfo}</p>
-              
-              {selectedFeature.contentType === 'instructors' && (
-                <div className="modal-list-grid">
+      {/* Feature Modal */}
+      <AnimatePresence>
+        {selectedFeature && (
+          <motion.div 
+            className="premium-modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedFeature(null)}
+          >
+            <motion.div 
+              className="premium-modal"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button className="modal-close" onClick={() => setSelectedFeature(null)}>✕</button>
+              <div className="modal-header-icon">{selectedFeature.icon}</div>
+              <h2 className="modal-title">{selectedFeature.title}</h2>
+              <p className="modal-desc">{selectedFeature.detailedInfo}</p>
+
+              {selectedFeature.contentList && selectedFeature.contentList.length > 0 && (
+                <div className="modal-items-grid">
                   {selectedFeature.contentList.map((item, idx) => (
-                    <div key={idx} className="modal-list-item">
-                      <div className="item-avatar">{item.avatar}</div>
-                      <div className="item-details">
+                    <div key={idx} className="modal-item-box">
+                      <div className="mi-avatar">{item.avatar || item.icon || item.image}</div>
+                      <div className="mi-info">
                         <h4>{item.name}</h4>
-                        <p className="item-role">{item.role}</p>
-                        <span className="item-meta">{item.experience}</span>
+                        <p>{item.role || item.desc || item.issuer}</p>
+                        <span className="mi-meta">{item.experience || item.tech || item.highlight}</span>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
-
-              {selectedFeature.contentType === 'projects' && (
-                <div className="modal-list-grid">
-                  {selectedFeature.contentList.map((item, idx) => (
-                    <div key={idx} className="modal-list-item">
-                      <div className="item-avatar">{item.icon}</div>
-                      <div className="item-details">
-                        <h4>{item.name}</h4>
-                        <p className="item-desc">{item.desc}</p>
-                        <span className="item-meta">Tech: {item.tech}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {selectedFeature.contentType === 'certificates' && (
-                <div className="modal-list-grid">
-                  {selectedFeature.contentList.map((item, idx) => (
-                    <div key={idx} className="modal-list-item certificate-item">
-                      <div className="item-avatar cert-icon">{item.image}</div>
-                      <div className="item-details">
-                        <h4>{item.name}</h4>
-                        <p className="item-role">Issuer: {item.issuer}</p>
-                        <span className="item-meta cert-highlight">{item.highlight}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
-            <div className="home-modal-footer">
-               <button className="btn-primary" onClick={closeModal}>Got it!</button>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Chatbot />
     </div>

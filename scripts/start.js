@@ -15,12 +15,11 @@ function killPort(port) {
 }
 
 killPort(3000);
-killPort(4000);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 
-spawn('cmd', ['/c', 'npx concurrently --kill-others "npm run react-start" "npm --prefix server start"'], {
+spawn('cmd', ['/c', 'npm run react-start'], {
   cwd: rootDir,
   stdio: 'inherit',
   shell: true,
